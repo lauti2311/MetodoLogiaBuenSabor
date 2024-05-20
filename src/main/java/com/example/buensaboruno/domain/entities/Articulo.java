@@ -1,5 +1,6 @@
 package com.example.buensaboruno.domain.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
@@ -23,10 +24,6 @@ public abstract class Articulo  extends Base {
     protected String denominacion;
     protected Double precioVenta;
 
-//    @ManyToMany(mappedBy = "articulos")
-//    //SE AGREGA EL BUILDER.DEFAULT PARA QUE BUILDER NO SOBREESCRIBA LA INICIALIZACION DE LA LISTA
-//   // @Builder.Default
-//    protected Set<Promocion> estaEnPromociones = new HashSet<>();
 
     @OneToMany
     //SE AGREGA EL JOIN COLUMN PARA QUE JPA NO CREE LA TABLA INTERMEDIA EN UNA RELACION ONE TO MANY
@@ -38,7 +35,13 @@ public abstract class Articulo  extends Base {
     protected Set<ImagenArticulo> imagenes = new HashSet<>();
 
     @ManyToOne
+    @JoinColumn(name = "unidad_medida_id")
     protected UnidadMedida unidadMedida;
+/*
+    @ManyToOne
+    @JoinColumn(name = "categoria_id")
+    @JsonIgnoreProperties(value = {"subCategorias", "categoriaPadre", "sucursales"})
+    protected Categoria categoria;*/
 
 
 }

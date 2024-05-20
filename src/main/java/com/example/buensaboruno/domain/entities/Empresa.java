@@ -28,4 +28,5 @@ public class Empresa extends Base{
     @ToString.Exclude
     @Builder.Default
     private Set<Sucursal> sucursales= new HashSet<>();
+
 }

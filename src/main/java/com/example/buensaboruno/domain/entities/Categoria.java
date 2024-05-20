@@ -1,5 +1,6 @@
 package com.example.buensaboruno.domain.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
@@ -35,14 +36,14 @@ public class Categoria extends Base{
     @Builder.Default
     private Set<Articulo> articulos = new HashSet<>();
 
-
-    @OneToMany
-    //SE AGREGA EL JOIN COLUMN PARA QUE JPA NO CREE LA TABLA INTERMEDIA EN UNA RELACION ONE TO MANY
-    //DE ESTA MANERA PONE EL FOREIGN KEY 'categoria_id' EN LA TABLA DE LOS MANY
-    @JoinColumn(name = "categoria_id")
-    //SE AGREGA EL BUILDER.DEFAULT PARA QUE BUILDER NO SOBREESCRIBA LA INICIALIZACION DE LA LISTA
+    @OneToMany(mappedBy = "categoriaPadre", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @Builder.Default
     private Set<Categoria> subCategorias = new HashSet<>();
+
+    @ManyToOne
+    @JoinColumn(name = "categoria_padre_id")
+    @JsonBackReference(value = "categoria_categoriaPadre")
+    private Categoria categoriaPadre;
 
 
 }

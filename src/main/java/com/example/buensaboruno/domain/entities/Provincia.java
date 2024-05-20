@@ -17,7 +17,8 @@ import java.util.List;
 public class Provincia extends Base {
     private String nombre;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.MERGE)
+    @JoinColumn(name = "pais_id")
     private Pais pais;
 
 }

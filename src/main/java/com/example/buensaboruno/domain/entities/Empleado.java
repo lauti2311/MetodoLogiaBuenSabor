@@ -26,7 +26,7 @@
         private String telefono;
         private String email;
         private LocalDate fechaNacimiento;
-        private Rol tipoEmpleado;
+        private Rol rol;
 
 
         @OneToOne
@@ -42,7 +42,8 @@
         @JoinColumn(name = "sucursal_id")
         private Sucursal sucursal;
 
-        @OneToOne
+        @OneToOne(cascade = CascadeType.ALL)
+        @JoinColumn(name = "imagen_empleado_id")
         @NotAudited
         private ImagenEmpleado imagenEmpleado;
 
