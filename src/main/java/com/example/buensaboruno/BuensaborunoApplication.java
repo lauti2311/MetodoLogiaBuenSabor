@@ -57,8 +57,8 @@ public class BuensaborunoApplication {
 //	@Autowired
 //	private UnidadMedidaRepository unidadMedidaRepository;
 //
-//	@Autowired
-//	private CategoriaRepository categoriaRepository;
+	@Autowired
+	private CategoriaRepository categoriaRepository;
 //
 //	@Autowired
 //	private ArticuloInsumoRepository articuloInsumoRepository;
@@ -83,9 +83,9 @@ public class BuensaborunoApplication {
 		logger.info("Estoy activo en el main Alberto");
 	}
 
-//	@Bean
-//	@Transactional
-//	CommandLineRunner init(ClienteRepository clienteRepository,
+	@Bean
+	@Transactional
+CommandLineRunner init(ClienteRepository clienteRepository,
 //						   ImagenClienteRepository imagenClienteRepository,
 //						   ImagenPromocionRepository imagenPromocionRepository,
 //						   ImagenEmpleadoRepository imagenEmpleadoRepository,
@@ -99,14 +99,14 @@ public class BuensaborunoApplication {
 //						   SucursalRepository sucursalRepository,
 //						   DomicilioRepository domicilioRepository,
 //						   UnidadMedidaRepository unidadMedidaRepository,
-//						   CategoriaRepository categoriaRepository,
+						   CategoriaRepository categoriaRepository,
 //						   ArticuloInsumoRepository articuloInsumoRepository,
 //						   ArticuloManufacturadoRepository articuloManufacturadoRepository,
 //						   ImagenArticuloRepository imagenArticuloRepository,
 //						   PromocionRepository promocionRepository,
 //						   PedidoRepository pedidoRepository,
-//						   EmpleadoRepository empleadoRepository, FacturaRepository facturaRepository) {
-//		return args -> {
+						   EmpleadoRepository empleadoRepository, FacturaRepository facturaRepository) {
+		return args -> {
 //			logger.info("----------------ESTOY----FUNCIONANDO---------------------");
 //			// Etapa del dashboard
 //			// Crear 1 pais
@@ -554,10 +554,10 @@ public class BuensaborunoApplication {
 //					.build();
 //			empresaRepository.save(empresa);
 //
-//			Categoria categoria = Categoria.builder()
-//					.denominacion("Categoria de prueba")
-//					.build();
-//			categoriaRepository.save(categoria);
+			Categoria categoria = Categoria.builder()
+					.denominacion("Categoria de prueba")
+					.build();
+			categoriaRepository.save(categoria);
 //			/*
 //			//PRUEBA LAZY -> FALLA
 //			var empresaRepo = empresaRepository.findById(2L);
@@ -620,7 +620,8 @@ public class BuensaborunoApplication {
 //		};
 //	}
 
+		};
+	}
 }
-
 
 

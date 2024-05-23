@@ -8,8 +8,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@CrossOrigin("*")
-@RequestMapping(path = "api/categorias")
+@CrossOrigin("http://localhost:5173")
+@RequestMapping(path = "categorias")
 public class CategoriaController extends BaseControllerImpl<Categoria, CategoriaServiceImpl>{
 
     private final CategoriaServiceImpl service;
