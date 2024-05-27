@@ -11,7 +11,7 @@ import java.util.List;
 
 @RestController
 @CrossOrigin("*")
-@RequestMapping(path = "api/manufacturados")
+@RequestMapping(path = "manufacturados")
 public class ArticuloManufacturadoController extends BaseControllerImpl<ArticuloManufacturado, ArticuloManufacturadoServiceImpl>{
 
     protected final ArticuloManufacturadoServiceImpl service;

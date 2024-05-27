@@ -11,7 +11,7 @@ import lombok.*;
 @ToString
 @Builder
 public class ImagenPromocion extends Base{
-    private String denominacion;
+    private String url;
 
 
 }
