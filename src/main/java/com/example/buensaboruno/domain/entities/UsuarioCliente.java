@@ -13,7 +13,7 @@ import lombok.*;
 //@Audited
 public class UsuarioCliente extends Base{
     private String auth0Id;
-    private String userName;
+    private String username;
 
 
 }
