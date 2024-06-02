@@ -18,6 +18,7 @@ import java.util.Set;
 @Builder
 public class ImagenEmpleado extends Base{
     private String url;
+    private String name;
 
 
 }

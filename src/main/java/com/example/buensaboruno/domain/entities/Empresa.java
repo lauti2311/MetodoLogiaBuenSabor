@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.envers.Audited;
+import org.hibernate.envers.NotAudited;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -16,7 +17,7 @@ import java.util.Set;
 @Setter
 @Getter
 @ToString
-@Builder
+@SuperBuilder
 //@Audited
 public class Empresa extends Base{
 
@@ -28,5 +29,10 @@ public class Empresa extends Base{
     @ToString.Exclude
     @Builder.Default
     private Set<Sucursal> sucursales= new HashSet<>();
+
+    @OneToMany(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "id_empresa")
+    @NotAudited
+    private Set<ImagenEmpresa> imagenes;
 
 }

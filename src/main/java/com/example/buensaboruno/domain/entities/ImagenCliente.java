@@ -11,5 +11,7 @@ import lombok.*;
 @ToString
 @Builder
 public class ImagenCliente extends Base{
+    private String name;
+
     private String url;
 }

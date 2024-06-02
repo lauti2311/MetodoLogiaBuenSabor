@@ -12,7 +12,7 @@ import org.hibernate.envers.Audited;
 @Getter
 @Setter
 @ToString
-@Builder
+@SuperBuilder
 @Entity
 //@Audited
 public class ArticuloManufacturadoDetalle extends Base{

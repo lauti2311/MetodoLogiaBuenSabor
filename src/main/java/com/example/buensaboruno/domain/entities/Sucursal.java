@@ -5,6 +5,7 @@ import jakarta.transaction.Transactional;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.envers.Audited;
+import org.hibernate.envers.NotAudited;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -59,4 +60,9 @@ public class Sucursal extends  Base{
 
     @ManyToOne
     private Empresa empresa;
+
+    @OneToMany(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "id_sucursal")
+    @NotAudited
+    private Set<ImagenSucursal> imagenes;
 }

@@ -12,6 +12,7 @@ import lombok.*;
 @Builder
 public class ImagenPromocion extends Base{
     private String url;
+    private String name;
 
 
 }
