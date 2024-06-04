@@ -45,8 +45,11 @@ public class BuensaborunoApplication {
 //	@Autowired
 //	private LocalidadRepository localidadRepository;
 //
-//	@Autowired
-//	private EmpresaRepository empresaRepository;
+	@Autowired
+	private EmpresaRepository empresaRepository;
+
+	@Autowired
+	private ImagenEmpresaRepository imagenEmpresaRepository;
 //
 //	@Autowired
 //	private SucursalRepository sucursalRepository;
@@ -187,8 +190,14 @@ CommandLineRunner init(ClienteRepository clienteRepository,
 //			Categoria categoriaPizzas = Categoria.builder().denominacion("Pizzas").
 //					build();
 //
-//
-//
+			Empresa empresaCarlos = Empresa.builder().nombre("Empresa uno").cuil(1234567L).eliminado(false)
+					.build();
+			empresaRepository.save(empresaCarlos);
+			ImagenEmpresa imagen = ImagenEmpresa.builder().eliminado(false).url("https://res.cloudinary.com/dgfbciltc/image/upload/neynstxyjh7ndh5emik5")
+					.name("Logo.png")
+					.build();
+			imagenEmpresaRepository.save(imagen);
+
 //			Categoria categoriaInsumos = Categoria.builder().denominacion("Insumos").
 //					build();
 //
