@@ -16,7 +16,7 @@ import java.util.List;
 @Getter
 @ToString
 @Builder
-//@Audited
+@Audited
 public class UnidadMedida extends Base{
 
     private String denominacion;

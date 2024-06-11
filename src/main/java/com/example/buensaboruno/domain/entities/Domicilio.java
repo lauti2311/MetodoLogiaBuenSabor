@@ -17,7 +17,7 @@ import java.util.Set;
 @Getter
 @ToString
 @Builder
-//@Audited
+@Audited
 public class Domicilio extends Base{
     private String calle;
     private Integer numero;

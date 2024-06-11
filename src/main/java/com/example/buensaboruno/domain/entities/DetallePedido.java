@@ -12,7 +12,7 @@ import org.hibernate.envers.Audited;
 @Getter
 @ToString
 @Builder
-//@Audited
+@Audited
 public class DetallePedido extends Base{
     private Integer cantidad;
     private Double subTotal;

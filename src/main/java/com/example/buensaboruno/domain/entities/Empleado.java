@@ -18,7 +18,7 @@
     @Setter
     @Getter
     @Builder
-    //@Audited
+    @Audited
     public class Empleado extends Base{
 
         private String nombre;
@@ -29,8 +29,8 @@
         private Rol rol;
 
 
-        @OneToOne
-        protected UsuarioEmpleado usuarioEmpleado;
+//        @OneToOne
+//        protected UsuarioEmpleado usuarioEmpleado;
 
         @OneToMany(mappedBy = "empleado", cascade = CascadeType.REFRESH, orphanRemoval = true)
         @ToString.Exclude

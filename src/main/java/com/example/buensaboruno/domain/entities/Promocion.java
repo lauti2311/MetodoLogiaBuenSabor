@@ -3,6 +3,7 @@ package com.example.buensaboruno.domain.entities;
 import com.example.buensaboruno.domain.enums.TipoPromocion;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.envers.Audited;
 import org.hibernate.envers.NotAudited;
 
 import java.time.LocalDate;
@@ -17,7 +18,7 @@ import java.util.Set;
 @Getter
 @ToString
 @Builder
-//@Audited
+@Audited
 public class Promocion  extends Base{
     private String denominacion;
     private LocalDate fechaDesde;
