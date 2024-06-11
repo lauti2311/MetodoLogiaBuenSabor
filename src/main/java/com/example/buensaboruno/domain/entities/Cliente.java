@@ -19,7 +19,7 @@ import java.util.Set;
 @Getter
 @ToString
 @Builder
-//@Audited
+@Audited
 public class Cliente extends Base{
 
     private String nombre;

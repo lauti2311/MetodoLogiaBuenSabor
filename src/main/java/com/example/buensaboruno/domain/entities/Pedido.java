@@ -21,7 +21,7 @@ import java.util.Set;
 @Getter
 @ToString
 @Builder
-//@Audited
+@Audited
 public class Pedido extends Base{
 
     private LocalTime horaEstimadaFinalizacion;

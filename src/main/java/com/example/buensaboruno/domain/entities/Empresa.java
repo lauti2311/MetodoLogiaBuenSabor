@@ -18,7 +18,7 @@ import java.util.Set;
 @Getter
 @ToString
 @SuperBuilder
-//@Audited
+@Audited
 public class Empresa extends Base{
 
     private String nombre;
