@@ -1,5 +1,6 @@
 package com.example.buensaboruno.domain.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
@@ -16,7 +17,6 @@ import java.util.Set;
 @NoArgsConstructor
 @Setter
 @Getter
-@ToString
 @SuperBuilder
 @Audited
 public class Empresa extends Base{
@@ -25,12 +25,12 @@ public class Empresa extends Base{
     private String razonSocial;
     private Long cuil;
 
-    @OneToMany(mappedBy = "empresa",cascade = CascadeType.REFRESH,fetch = FetchType.LAZY)
-    @ToString.Exclude
+    @OneToMany(mappedBy = "empresa",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @JsonIgnore
     @Builder.Default
     private Set<Sucursal> sucursales= new HashSet<>();
 
-    @OneToMany(cascade = CascadeType.PERSIST)
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_empresa")
     @NotAudited
     private Set<ImagenEmpresa> imagenes;

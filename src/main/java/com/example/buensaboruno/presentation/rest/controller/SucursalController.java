@@ -1,6 +1,7 @@
 package com.example.buensaboruno.presentation.rest.controller;
 
 
+import com.example.buensaboruno.business.facade.Sucursalfacade;
 import com.example.buensaboruno.business.facade.imp.SucursalFacadeImp;
 import com.example.buensaboruno.business.service.Base.BaseServiceImpl;
 import com.example.buensaboruno.domain.dto.sucursal.SucursalFullDto;
@@ -9,9 +10,12 @@ import com.example.buensaboruno.business.service.Imp.SucursalServiceImpl;
 import com.example.buensaboruno.presentation.rest.base.BaseControllerImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 @RestController
 @CrossOrigin("*")
@@ -21,6 +25,9 @@ public class SucursalController extends BaseControllerImpl<Sucursal, SucursalFul
     public SucursalController(SucursalFacadeImp facade) {
         super(facade);
     }
+
+    @Autowired
+    private Sucursalfacade sucursalfacade;
 
     @Override
     @PostMapping()
@@ -71,6 +78,16 @@ public class SucursalController extends BaseControllerImpl<Sucursal, SucursalFul
         } catch (Exception e) {
             e.printStackTrace();
             return null; // Manejo básico de errores, se puede mejorar para devolver una respuesta más específica
+        }
+    }
+
+    @GetMapping("/empresa/{empresaId}")
+    public ResponseEntity<List<SucursalFullDto>> sucursalEmpresa(@PathVariable Long empresaId) {
+        List<SucursalFullDto> sucursales = sucursalfacade.sucursalEmpresa(empresaId);
+        if (sucursales != null && !sucursales.isEmpty()) {
+            return ResponseEntity.ok(sucursales);
+        } else {
+            return ResponseEntity.noContent().build();
         }
     }
 }

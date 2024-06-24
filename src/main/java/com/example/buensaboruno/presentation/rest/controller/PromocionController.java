@@ -1,13 +1,18 @@
 package com.example.buensaboruno.presentation.rest.controller;
 
+import com.example.buensaboruno.business.facade.PromocionFacade;
 import com.example.buensaboruno.business.facade.imp.PromocionFacadeImp;
 import com.example.buensaboruno.domain.dto.promocion.PromocionFullDto;
 import com.example.buensaboruno.domain.entities.Promocion;
 import com.example.buensaboruno.business.service.Imp.PromocionServiceImpl;
 import com.example.buensaboruno.presentation.rest.base.BaseControllerImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+//import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 @RestController
 @CrossOrigin("*")
@@ -15,6 +20,44 @@ import org.springframework.web.multipart.MultipartFile;
 public class PromocionController extends BaseControllerImpl<Promocion, PromocionFullDto, Long, PromocionFacadeImp> {
 
     public PromocionController(PromocionFacadeImp facade) {super (facade); }
+
+    @Autowired
+    private PromocionFacade promocionFacade;
+
+    @GetMapping("/sucursal/{idSucursal}")
+    public ResponseEntity<List<PromocionFullDto>> promocionSucursal(@PathVariable Long idSucursal) {
+        List<PromocionFullDto> promociones = promocionFacade.promocionSucursal(idSucursal);
+        if (promociones != null && !promociones.isEmpty()) {
+            return ResponseEntity.ok(promociones);
+        } else {
+            return ResponseEntity.noContent().build();
+        }
+    }
+    @GetMapping("/{id}")
+    public ResponseEntity<PromocionFullDto> getById(@PathVariable Long id){
+        return super.getById(id);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<PromocionFullDto>> getAll() {
+        return super.getAll();
+    }
+
+    @PostMapping()
+    public ResponseEntity<PromocionFullDto> create(@RequestBody PromocionFullDto entity){
+        return super.create(entity);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<PromocionFullDto> edit(@RequestBody PromocionFullDto entity, @PathVariable Long id){
+        return super.edit(entity, id);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteById(@PathVariable Long id){
+        return super.deleteById(id);
+    }
+
     @PostMapping("/uploads")
     public ResponseEntity<String> uploadImages(
             @RequestParam(value = "uploads", required = true) MultipartFile[] files,

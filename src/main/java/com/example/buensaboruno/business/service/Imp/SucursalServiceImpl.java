@@ -1,8 +1,10 @@
 package com.example.buensaboruno.business.service.Imp;
 
+import com.example.buensaboruno.business.mapper.SucursalMapper;
 import com.example.buensaboruno.business.service.Base.BaseServiceImpl;
 import com.example.buensaboruno.business.service.CloudinaryService;
 import com.example.buensaboruno.business.service.SucursalService;
+import com.example.buensaboruno.domain.dto.sucursal.SucursalFullDto;
 import com.example.buensaboruno.domain.entities.ImagenSucursal;
 import com.example.buensaboruno.domain.entities.Sucursal;
 import com.example.buensaboruno.repositories.DomicilioRepository;
@@ -37,6 +39,8 @@ public class SucursalServiceImpl extends BaseServiceImpl<Sucursal, Long> impleme
     ImagenSucursalRepository imagenSucursalRepository;
     @Autowired
     private CloudinaryService cloudinaryService;
+    @Autowired
+    private SucursalMapper sucursalMapper;
     private static final Logger logger = LoggerFactory.getLogger(BaseServiceImpl.class);
 
     @Override
@@ -152,5 +156,11 @@ public class SucursalServiceImpl extends BaseServiceImpl<Sucursal, Long> impleme
             // Devolver un error (400) si ocurre alguna excepción durante la eliminación
             return new ResponseEntity<>("{\"status\":\"ERROR\", \"message\":\"" + e.getMessage() + "\"}", HttpStatus.BAD_REQUEST);
         }
+    }
+
+    @Override
+    public List<SucursalFullDto> sucursalEmpresa(Long empresaId) {
+        List<Sucursal> sucursales = this.sucursalRepository.sucursalEmpresa(empresaId);
+        return sucursalMapper.sucursalesToSucursalFullDto(sucursales);
     }
 }
