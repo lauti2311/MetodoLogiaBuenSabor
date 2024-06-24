@@ -15,6 +15,7 @@ import org.springframework.context.annotation.Bean;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.HashSet;
 import java.util.Optional;
 import java.util.Random;
 
@@ -50,6 +51,9 @@ public class BuensaborunoApplication {
 
 	@Autowired
 	private ImagenEmpresaRepository imagenEmpresaRepository;
+
+	@Autowired
+	private SucursalRepository sucursalRepository;
 //
 //	@Autowired
 //	private SucursalRepository sucursalRepository;
@@ -190,13 +194,34 @@ CommandLineRunner init(ClienteRepository clienteRepository,
 //			Categoria categoriaPizzas = Categoria.builder().denominacion("Pizzas").
 //					build();
 //
-			Empresa empresaCarlos = Empresa.builder().nombre("Empresa uno").cuil(1234567L).eliminado(false)
-					.build();
+			Empresa empresaCarlos = Empresa.builder().nombre("Empresa uno").cuil(1234567L).eliminado(false).razonSocial("Venta de Alimentos").build();
 			empresaRepository.save(empresaCarlos);
 			ImagenEmpresa imagen = ImagenEmpresa.builder().eliminado(false).url("https://res.cloudinary.com/dgfbciltc/image/upload/neynstxyjh7ndh5emik5")
 					.name("Logo.png")
 					.build();
 			imagenEmpresaRepository.save(imagen);
+
+			if (empresaCarlos.getImagenes() == null) {
+				empresaCarlos.setImagenes(new HashSet<>());
+			}
+			empresaCarlos.getImagenes().add(imagen);
+
+// Actualizar la empresa para reflejar la asociación con la imagen
+			empresaRepository.save(empresaCarlos);
+			Sucursal sucursalPrincipal = Sucursal.builder()
+					.nombre("Sucursal Principal")
+					.horarioApertura(LocalTime.of(8, 0))   // Ejemplo de hora de apertura
+					.horarioCierre(LocalTime.of(20, 0))   // Ejemplo de hora de cierre
+					.esCasaMatriz(true)
+					.build();
+
+// Asociar la empresa a la sucursal
+			sucursalPrincipal.setEmpresa(empresaCarlos);  // Asociamos la sucursal a la empresa creada anteriormente
+
+// Guardar la sucursal en la base de datos
+			sucursalRepository.save(sucursalPrincipal);
+
+
 
 //			Categoria categoriaInsumos = Categoria.builder().denominacion("Insumos").
 //					build();

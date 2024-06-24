@@ -1,15 +1,13 @@
 package com.example.buensaboruno.business.service.Imp;
 
 
+import com.example.buensaboruno.business.mapper.PromocionMapper;
 import com.example.buensaboruno.business.service.Base.BaseServiceImpl;
 import com.example.buensaboruno.business.service.CloudinaryService;
 import com.example.buensaboruno.business.service.PromocionService;
-import com.example.buensaboruno.domain.entities.ImagenPromocion;
-import com.example.buensaboruno.domain.entities.Promocion;
-import com.example.buensaboruno.domain.entities.Sucursal;
-import com.example.buensaboruno.repositories.ImagenPromocionRepository;
-import com.example.buensaboruno.repositories.PromocionRepository;
-import com.example.buensaboruno.repositories.SucursalRepository;
+import com.example.buensaboruno.domain.dto.promocion.PromocionFullDto;
+import com.example.buensaboruno.domain.entities.*;
+import com.example.buensaboruno.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,6 +31,19 @@ public class PromocionServiceImpl extends BaseServiceImpl<Promocion, Long> imple
     @Autowired
     SucursalRepository sucursalRepository;
 
+    @Autowired
+    PromocionMapper promocionMapper;
+    @Autowired
+    ArticuloRepository articuloRepository;
+
+    @Autowired
+    PromocionDetalleRepository promocionDetalleRepository;
+    @Override
+    public List<PromocionFullDto> promocionSucursal(Long idSucursal) {
+        List<Promocion> promociones = this.promocionRepository.promocionSucursal(idSucursal);
+        return promocionMapper.promocionesToPromocionFullDto(promociones);
+    }
+
     @Override
     public Promocion create(Promocion request) {
         // Guardar la instancia de Promocion en la base de datos para asegurarse de que esté gestionada por el EntityManager
@@ -40,7 +51,6 @@ public class PromocionServiceImpl extends BaseServiceImpl<Promocion, Long> imple
 
         Set<Sucursal> sucursales = promocionPersistida.getSucursales();
         Set<Sucursal> sucursalesPersistidas = new HashSet<>();
-
         // Verificar y asociar sucursales existentes
         if (sucursales != null && !sucursales.isEmpty()) {
             for (Sucursal sucursal : sucursales) {
@@ -57,7 +67,25 @@ public class PromocionServiceImpl extends BaseServiceImpl<Promocion, Long> imple
             promocionPersistida.setSucursales(sucursalesPersistidas); // Establecer las sucursales asociadas a la promoción
             promocionRepository.save(promocionPersistida); // Guardar la promoción actualizada con las sucursales asociadas
         }
+        Set<PromocionDetalle> detalles = request.getPromocionDetalles();
+        Set<PromocionDetalle> detallesPersistidos = new HashSet<>();
 
+        if (detalles != null && !detalles.isEmpty()) {
+            for (PromocionDetalle detalle : detalles) {
+                Articulo articulo = detalle.getArticulo();
+                if (articulo == null || articulo.getId() == null) {
+                    throw new RuntimeException("El artículo del detalle no puede ser nulo.");
+                }
+                articulo = articuloRepository.findById(detalle.getArticulo().getId())
+                        .orElseThrow(() -> new RuntimeException("Artículo con id " + detalle.getArticulo().getId() + " inexistente"));
+                detalle.setArticulo(articulo);
+                PromocionDetalle savedDetalle = promocionDetalleRepository.save(detalle);
+                detallesPersistidos.add(savedDetalle);
+            }
+            request.setPromocionDetalles(detallesPersistidos);
+        } else {
+            throw new IllegalArgumentException("El pedido debe contener un detalle o más.");
+        }
         return promocionPersistida;
     }
     @Override

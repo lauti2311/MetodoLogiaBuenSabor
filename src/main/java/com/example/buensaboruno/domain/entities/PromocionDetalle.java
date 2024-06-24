@@ -3,6 +3,7 @@ package com.example.buensaboruno.domain.entities;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 import org.hibernate.envers.Audited;
 
 @Entity
@@ -10,7 +11,7 @@ import org.hibernate.envers.Audited;
 @NoArgsConstructor
 @Setter
 @Getter
-@Builder
+@SuperBuilder
 @Audited
 public class PromocionDetalle extends Base{
     private int cantidad;
