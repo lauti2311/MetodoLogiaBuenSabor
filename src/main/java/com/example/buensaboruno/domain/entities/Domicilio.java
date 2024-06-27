@@ -16,7 +16,7 @@ import java.util.Set;
 @Setter
 @Getter
 @ToString
-@Builder
+@SuperBuilder
 @Audited
 public class Domicilio extends Base{
     private String calle;
@@ -25,7 +25,7 @@ public class Domicilio extends Base{
     private Integer piso;
     private Integer nroDpto;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "localidad_id")
     @NotAudited
     private Localidad localidad;
