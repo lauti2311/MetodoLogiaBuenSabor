@@ -19,7 +19,7 @@ import java.util.Set;
 @NoArgsConstructor
 @Setter
 @Getter
-@Builder
+@SuperBuilder
 @Audited
 public class Sucursal extends  Base{
 
