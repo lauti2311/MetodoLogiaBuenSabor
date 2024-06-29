@@ -20,8 +20,7 @@ import java.util.Set;
 @NoArgsConstructor
 @Setter
 @Getter
-@ToString
-@Builder
+@SuperBuilder
 @Audited
 public class Sucursal extends  Base{
 
@@ -63,7 +62,7 @@ public class Sucursal extends  Base{
     @ManyToOne
     private Empresa empresa;
 
-    @OneToMany(cascade = CascadeType.PERSIST)
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_sucursal")
     @NotAudited
     private Set<ImagenSucursal> imagenes;

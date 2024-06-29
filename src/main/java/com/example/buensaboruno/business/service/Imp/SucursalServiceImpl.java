@@ -64,7 +64,7 @@ public class SucursalServiceImpl extends BaseServiceImpl<Sucursal, Long> impleme
     @Override
     public Sucursal actualizarSucursal(Long id, Sucursal sucursal) {
         // Buscar la sucursal existente en el repositorio
-        Optional<Sucursal> sucursalOptional = sucursalRepository.findById(id);
+        Optional<Sucursal> sucursalOptional = sucursalRepository.findById(sucursal.getId());
         if (sucursalOptional.isEmpty()) {
             throw new RuntimeException("No se puede encontrar la sucursal con el ID proporcionado: " + id);
         }

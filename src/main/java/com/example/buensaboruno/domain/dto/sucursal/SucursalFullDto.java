@@ -1,5 +1,6 @@
 package com.example.buensaboruno.domain.dto.sucursal;
 
+
 import com.example.buensaboruno.domain.dto.BaseDto;
 import com.example.buensaboruno.domain.dto.domicilio.DomicilioFullDto;
 import com.example.buensaboruno.domain.dto.empresa.EmpresaCreateDto;
@@ -29,4 +30,5 @@ public class SucursalFullDto extends BaseDto {
     private DomicilioFullDto domicilio;
     private EmpresaCreateDto empresa;
     private Set<ImagenDto> imagenes;
+
 }

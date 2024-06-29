@@ -37,6 +37,19 @@ public class PromocionServiceImpl extends BaseServiceImpl<Promocion, Long> imple
     @Autowired
     PromocionMapper promocionMapper;
 
+    @Autowired
+    PromocionMapper promocionMapper;
+    @Autowired
+    ArticuloRepository articuloRepository;
+
+    @Autowired
+    PromocionDetalleRepository promocionDetalleRepository;
+    @Override
+    public List<PromocionFullDto> promocionSucursal(Long idSucursal) {
+        List<Promocion> promociones = this.promocionRepository.promocionSucursal(idSucursal);
+        return promocionMapper.promocionesToPromocionFullDto(promociones);
+    }
+
     @Override
     public List<PromocionFullDto> promocionSucursal(Long idSucursal) {
         List<Promocion> promociones = this.promocionRepository.promocionSucursal(idSucursal);

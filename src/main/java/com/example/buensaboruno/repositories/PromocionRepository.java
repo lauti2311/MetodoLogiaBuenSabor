@@ -15,5 +15,6 @@ public interface PromocionRepository extends BaseRepository<Promocion,Long>{
             "WHERE s.id = :idSucursal " +
             "AND p.eliminado = false " +
             "AND (i IS NULL OR i.eliminado = false)")
-    List<Promocion> promocionSucursal(@Param("id") Long id);
+    List<Promocion> promocionSucursal(@Param("idSucursal") Long idSucursal);
+
 }

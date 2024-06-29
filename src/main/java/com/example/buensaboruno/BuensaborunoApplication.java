@@ -15,6 +15,7 @@ import org.springframework.context.annotation.Bean;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.HashSet;
 import java.util.Optional;
 import java.util.Random;
 
@@ -45,12 +46,15 @@ public class BuensaborunoApplication {
 //	@Autowired
 //	private LocalidadRepository localidadRepository;
 //
-//	@Autowired
-//	private EmpresaRepository empresaRepository;
+	@Autowired
+	private EmpresaRepository empresaRepository;
+
+	@Autowired
+	private ImagenEmpresaRepository imagenEmpresaRepository;
+
+	@Autowired
+	private SucursalRepository sucursalRepository;
 //
-//	@Autowired
-//	private ImagenEmpresaRepository imagenEmpresaRepository;
-////
 //	@Autowired
 //	private SucursalRepository sucursalRepository;
 //
@@ -60,8 +64,8 @@ public class BuensaborunoApplication {
 //	@Autowired
 //	private UnidadMedidaRepository unidadMedidaRepository;
 //
-//	@Autowired
-//	private CategoriaRepository categoriaRepository;
+	@Autowired
+	private CategoriaRepository categoriaRepository;
 //
 //	@Autowired
 //	private ArticuloInsumoRepository articuloInsumoRepository;
@@ -81,14 +85,14 @@ public class BuensaborunoApplication {
 //	@Autowired
 //	private PedidoRepository pedidoRepository;
 
-//	public static void main(String[] args) {
-//		SpringApplication.run(BuensaborunoApplication.class, args);
-//		logger.info("Estoy activo en el main Alberto");
-//	}
-//
-//	@Bean
-//	@Transactional
-//CommandLineRunner init(ClienteRepository clienteRepository,
+	public static void main(String[] args) {
+		SpringApplication.run(BuensaborunoApplication.class, args);
+		logger.info("Estoy activo en el main Alberto");
+	}
+
+	@Bean
+	@Transactional
+CommandLineRunner init(ClienteRepository clienteRepository,
 //						   ImagenClienteRepository imagenClienteRepository,
 //						   ImagenPromocionRepository imagenPromocionRepository,
 //						   ImagenEmpleadoRepository imagenEmpleadoRepository,
@@ -102,14 +106,14 @@ public class BuensaborunoApplication {
 //						   SucursalRepository sucursalRepository,
 //						   DomicilioRepository domicilioRepository,
 //						   UnidadMedidaRepository unidadMedidaRepository,
-//						   CategoriaRepository categoriaRepository,
+						   CategoriaRepository categoriaRepository,
 //						   ArticuloInsumoRepository articuloInsumoRepository,
 //						   ArticuloManufacturadoRepository articuloManufacturadoRepository,
 //						   ImagenArticuloRepository imagenArticuloRepository,
 //						   PromocionRepository promocionRepository,
 //						   PedidoRepository pedidoRepository,
-//						   EmpleadoRepository empleadoRepository, FacturaRepository facturaRepository) {
-//		return args -> {
+						   EmpleadoRepository empleadoRepository, FacturaRepository facturaRepository) {
+		return args -> {
 //			logger.info("----------------ESTOY----FUNCIONANDO---------------------");
 //			// Etapa del dashboard
 //			// Crear 1 pais
@@ -190,18 +194,39 @@ public class BuensaborunoApplication {
 //			Categoria categoriaPizzas = Categoria.builder().denominacion("Pizzas").
 //					build();
 //
-//			Empresa empresaCarlos = Empresa.builder().nombre("Empresa uno").cuil(1234567L).eliminado(false)
-//					.build();
-//			empresaRepository.save(empresaCarlos);
-//			ImagenEmpresa imagen = ImagenEmpresa.builder().eliminado(false).url("https://res.cloudinary.com/dgfbciltc/image/upload/neynstxyjh7ndh5emik5")
-//					.name("Logo.png")
-//					.build();
-//			imagenEmpresaRepository.save(imagen);
-//
+			Empresa empresaCarlos = Empresa.builder().nombre("Empresa uno").cuil(1234567L).eliminado(false).razonSocial("Venta de Alimentos").build();
+			empresaRepository.save(empresaCarlos);
+			ImagenEmpresa imagen = ImagenEmpresa.builder().eliminado(false).url("https://res.cloudinary.com/dgfbciltc/image/upload/neynstxyjh7ndh5emik5")
+					.name("Logo.png")
+					.build();
+			imagenEmpresaRepository.save(imagen);
+
+			if (empresaCarlos.getImagenes() == null) {
+				empresaCarlos.setImagenes(new HashSet<>());
+			}
+			empresaCarlos.getImagenes().add(imagen);
+
+// Actualizar la empresa para reflejar la asociación con la imagen
+			empresaRepository.save(empresaCarlos);
+			Sucursal sucursalPrincipal = Sucursal.builder()
+					.nombre("Sucursal Principal")
+					.horarioApertura(LocalTime.of(8, 0))   // Ejemplo de hora de apertura
+					.horarioCierre(LocalTime.of(20, 0))   // Ejemplo de hora de cierre
+					.esCasaMatriz(true)
+					.build();
+
+// Asociar la empresa a la sucursal
+			sucursalPrincipal.setEmpresa(empresaCarlos);  // Asociamos la sucursal a la empresa creada anteriormente
+
+// Guardar la sucursal en la base de datos
+			sucursalRepository.save(sucursalPrincipal);
+
+
+
 //			Categoria categoriaInsumos = Categoria.builder().denominacion("Insumos").
 //					build();
-
-			// Grabo la categoría de insumos y de Manufacturados
+//
+//			// Grabo la categoría de insumos y de Manufacturados
 //			categoriaRepository.save(categoriaPizzas);
 //			categoriaRepository.save(categoriaInsumos);
 //			// Asigno subCategorías
@@ -245,7 +270,7 @@ public class BuensaborunoApplication {
 //
 //
 //
-			// Crear Unidades de medida
+//			// Crear Unidades de medida
 //			UnidadMedida unidadMedidaLitros = UnidadMedida.builder().denominacion("Litros").build();
 //			UnidadMedida unidadMedidaGramos = UnidadMedida.builder().denominacion("Gramos").build();
 //			UnidadMedida unidadMedidaCantidad = UnidadMedida.builder().denominacion("Cantidad").build();
@@ -257,7 +282,7 @@ public class BuensaborunoApplication {
 //
 //
 //
-			// Crear Insumos , coca cola , harina , etc
+//			// Crear Insumos , coca cola , harina , etc
 //			ArticuloInsumo cocaCola = ArticuloInsumo.builder().
 //					denominacion("Coca cola").
 //					unidadMedida(unidadMedidaLitros).
@@ -270,8 +295,8 @@ public class BuensaborunoApplication {
 //			ArticuloInsumo harina = ArticuloInsumo.builder().denominacion("Harina").unidadMedida(unidadMedidaGramos).esParaElaborar(true).stockActual(4).stockMaximo(40).precioCompra(40.0).precioVenta(60.5).build();
 //			ArticuloInsumo queso = ArticuloInsumo.builder().denominacion("Queso").unidadMedida(unidadMedidaGramos).esParaElaborar(true).stockActual(20).stockMaximo(50).precioCompra(23.6).precioVenta(66.6).build();
 //			ArticuloInsumo tomate = ArticuloInsumo.builder().denominacion("Tomate").unidadMedida(unidadMedidaCantidad).esParaElaborar(true).stockActual(20).stockMaximo(50).precioCompra(23.6).precioVenta(66.6).build();
-
-			// crear fotos para cada insumo
+//
+//			// crear fotos para cada insumo
 //			ImagenArticulo imagenArticuloCoca = ImagenArticulo.builder().
 //					url("https://m.media-amazon.com/images/I/51v8nyxSOYL._SL1500_.jpg").
 //					build();
@@ -283,7 +308,7 @@ public class BuensaborunoApplication {
 //			imagenArticuloRepository.save(imagenArticuloQueso);
 //			imagenArticuloRepository.save(imagenArticuloTomate);
 //
-			//ASOCIAMOS IMAGEN CON INSUMOS
+//			//ASOCIAMOS IMAGEN CON INSUMOS
 //			cocaCola.getImagenes().add(imagenArticuloCoca);
 //			harina.getImagenes().add(imagenArticuloHarina);
 //			queso.getImagenes().add(imagenArticuloQueso);
@@ -295,7 +320,7 @@ public class BuensaborunoApplication {
 //			articuloInsumoRepository.save(tomate);
 //
 //
-			//ASOCIAMOS CATEGORIA CON INSUMOS
+//			//ASOCIAMOS CATEGORIA CON INSUMOS
 //			categoriaInsumos.getArticulos().add(harina);
 //			categoriaInsumos.getArticulos().add(queso);
 //			categoriaInsumos.getArticulos().add(tomate);
@@ -563,10 +588,10 @@ public class BuensaborunoApplication {
 //					.build();
 //			empresaRepository.save(empresa);
 //
-//			Categoria categoria = Categoria.builder()
-//					.denominacion("Categoria de prueba")
-//					.build();
-//			categoriaRepository.save(categoria);
+			Categoria categoria = Categoria.builder()
+					.denominacion("Categoria de prueba")
+					.build();
+			categoriaRepository.save(categoria);
 //			/*
 //			//PRUEBA LAZY -> FALLA
 //			var empresaRepo = empresaRepository.findById(2L);
@@ -629,33 +654,8 @@ public class BuensaborunoApplication {
 //		};
 //	}
 
-//		};
-//	}
-//}
-
-	@Autowired
-	private EmpresaRepository empresaRepository;
-
-	@Autowired
-	private ImagenEmpresaRepository imagenEmpresaRepository;
-
-	@Autowired
-	private  UnidadMedidaRepository unidadMedidaRepository;
-
-	public static void main(String[] args) {
-		SpringApplication.run(BuensaborunoApplication.class, args);
-		logger.info("Estoy activo en el main");
-	}
-
-
-	@Bean
-	@Transactional
-	CommandLineRunner init() {
-		return args -> {
-			logger.info("----------------ESTOY----FUNCIONANDO---------------------");
 		};
 	}
-
 }
 
 

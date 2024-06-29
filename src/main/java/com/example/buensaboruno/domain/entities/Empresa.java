@@ -26,14 +26,12 @@ public class Empresa extends Base{
     private String razonSocial;
     private Long cuil;
 
-    @OneToMany(mappedBy = "empresa",cascade = CascadeType.REFRESH,fetch = FetchType.LAZY)
-//    @ToString.Exclude
-//    @Builder.Default
-    @Builder.Default
+    @OneToMany(mappedBy = "empresa",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     @JsonIgnore
+    @Builder.Default
     private Set<Sucursal> sucursales= new HashSet<>();
 
-    @OneToMany(cascade = CascadeType.PERSIST)
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_empresa")
     @NotAudited
     private Set<ImagenEmpresa> imagenes;

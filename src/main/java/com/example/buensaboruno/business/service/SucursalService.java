@@ -19,5 +19,7 @@ public interface SucursalService extends BaseService<Sucursal, Long> {
     ResponseEntity<String> uploadImages(MultipartFile[] files, Long id);
 
     ResponseEntity<String> deleteImage(String publicId, Long id);
-    List<SucursalFullDto> sucursalEmpresa(Long idEmpresa);
+
+    List<SucursalFullDto> sucursalEmpresa(Long empresaId);
+
 }
