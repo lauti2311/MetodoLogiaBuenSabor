@@ -1,21 +1,65 @@
 package com.example.buensaboruno.presentation.rest.controller;
 
 import com.example.buensaboruno.business.facade.imp.PromocionFacadeImp;
+import com.example.buensaboruno.business.facade.PromocionFacade;
 import com.example.buensaboruno.domain.dto.promocion.PromocionFullDto;
 import com.example.buensaboruno.domain.entities.Promocion;
-import com.example.buensaboruno.business.service.Imp.PromocionServiceImpl;
 import com.example.buensaboruno.presentation.rest.base.BaseControllerImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 @RestController
+@RequestMapping("/promocion")
 @CrossOrigin("*")
-@RequestMapping(path = "/promociones")
 public class PromocionController extends BaseControllerImpl<Promocion, PromocionFullDto, Long, PromocionFacadeImp> {
 
     public PromocionController(PromocionFacadeImp facade) {super (facade); }
+    @Autowired
+    private PromocionFacade promocionFacade;
+    @GetMapping("/sucursal/{idSucursal}")
+    public ResponseEntity<List<PromocionFullDto>> promocionSucursal(@PathVariable Long idSucursal) {
+        List<PromocionFullDto> promociones = promocionFacade.promocionSucursal(idSucursal);
+        if (promociones != null && !promociones.isEmpty()) {
+            return ResponseEntity.ok(promociones);
+        } else {
+            return ResponseEntity.noContent().build();
+        }
+    }
+    @GetMapping("/{id}")
+    public ResponseEntity<PromocionFullDto> getById(@PathVariable Long id){
+        return super.getById(id);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<PromocionFullDto>> getAll() {
+        return super.getAll();
+    }
+
+    @PostMapping()
+//    @PreAuthorize("hasAnyAuthority('ADMIN', 'SUPERADMIN')")
+    public ResponseEntity<PromocionFullDto> create(@RequestBody PromocionFullDto entity){
+        return super.create(entity);
+    }
+
+    @PutMapping("/{id}")
+//    @PreAuthorize("hasAnyAuthority('ADMIN', 'SUPERADMIN')")
+    public ResponseEntity<PromocionFullDto> edit(@RequestBody PromocionFullDto entity, @PathVariable Long id){
+        return super.edit(entity, id);
+    }
+
+    @DeleteMapping("/{id}")
+//    @PreAuthorize("hasAnyAuthority('ADMIN', 'SUPERADMIN')")
+    public ResponseEntity<?> deleteById(@PathVariable Long id){
+        return super.deleteById(id);
+    }
+
     @PostMapping("/uploads")
+//    @PreAuthorize("hasAnyAuthority('ADMIN', 'SUPERADMIN')")
     public ResponseEntity<String> uploadImages(
             @RequestParam(value = "uploads", required = true) MultipartFile[] files,
             @RequestParam(value = "id", required = true) Long idArticulo) {
@@ -29,6 +73,7 @@ public class PromocionController extends BaseControllerImpl<Promocion, Promocion
 
     // Método POST para eliminar imágenes por su publicId y Long
     @PostMapping("/deleteImg")
+//    @PreAuthorize("hasAnyAuthority('ADMIN', 'SUPERADMIN')")
     public ResponseEntity<String> deleteById(
             @RequestParam(value = "publicId", required = true) String publicId,
             @RequestParam(value = "id", required = true) Long id) {

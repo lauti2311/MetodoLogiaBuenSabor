@@ -37,4 +37,7 @@ public class PromocionFacadeImp extends BaseFacadeImp<Promocion, PromocionFullDt
     public ResponseEntity<String> deleteImage(String publicId, Long id) {
         return promocionService.deleteImage(publicId, id);
     }
+    public List<PromocionFullDto> promocionSucursal(Long idSucursal) {
+        return this.promocionService.promocionSucursal(idSucursal);
+    }
 }

@@ -1,8 +1,10 @@
 package com.example.buensaboruno.business.service.Imp;
 
 
+import com.example.buensaboruno.business.mapper.CategoriaMapper;
 import com.example.buensaboruno.business.service.Base.BaseServiceImpl;
 import com.example.buensaboruno.business.service.CategoriaService;
+import com.example.buensaboruno.domain.dto.categoria.CategoriaCreateDto;
 import com.example.buensaboruno.domain.entities.Categoria;
 import com.example.buensaboruno.domain.entities.Sucursal;
 import com.example.buensaboruno.repositories.CategoriaRepository;
@@ -11,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -24,6 +27,40 @@ public class CategoriaServiceImpl extends BaseServiceImpl<Categoria, Long> imple
     @Autowired
     SucursalRepository sucursalRepository;
 
+    @Autowired
+    CategoriaMapper categoriaMapper;
+    @Override
+    public List<CategoriaCreateDto> categoriaSucursal(Long idSucursal) {
+        // Obtener la lista de categorías que están asociadas a la sucursal
+        List<Categoria> categorias = this.categoriaRepository.categoriaSucursal(idSucursal);
+
+        // Convertir la lista de categorías en un DTO utilizando el mapper
+        List<CategoriaCreateDto> categoriaCreateDTOs = categoriaMapper.categoriasToCategoriaCreateDto(categorias);
+
+        // Devolver la lista de DTOs procesados
+        return categoriaCreateDTOs;
+    }
+    @Override
+    public List<CategoriaCreateDto> categoriaInsumoSucursal(Long idSucursal) {
+        // Obtener la lista de categorías que están asociadas a la sucursal
+        List<Categoria> categorias = this.categoriaRepository.categoriaInsumosSucursal(idSucursal);
+
+        // Convertir la lista de categorías en un DTO utilizando el mapper
+        List<CategoriaCreateDto> categoriaCreateDTOs = categoriaMapper.categoriasToCategoriaCreateDto(categorias);
+
+        // Devolver la lista de DTOs procesados
+        return categoriaCreateDTOs;
+    }@Override
+    public List<CategoriaCreateDto> categoriaManufacturadoSucursal(Long idSucursal) {
+        // Obtener la lista de categorías que están asociadas a la sucursal
+        List<Categoria> categorias = this.categoriaRepository.categoriaManufacturadosSucursal(idSucursal);
+
+        // Convertir la lista de categorías en un DTO utilizando el mapper
+        List<CategoriaCreateDto> categoriaCreateDTOs = categoriaMapper.categoriasToCategoriaCreateDto(categorias);
+
+        // Devolver la lista de DTOs procesados
+        return categoriaCreateDTOs;
+    }
     @Override
     public Categoria create(Categoria request) {
         // Guardar la instancia de Categoria en la base de datos para asegurarse de que esté gestionada por el EntityManager
@@ -55,35 +92,61 @@ public class CategoriaServiceImpl extends BaseServiceImpl<Categoria, Long> imple
     @Override
     public Categoria update(Categoria request, Long id) {
         Categoria categoria = categoriaRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("La categoria con id " + id + " no se ha encontrado"));
+                .orElseThrow(() -> new RuntimeException("La categoría con id " + id + " no se ha encontrado"));
 
-        // Obtener todas las sucursales asociadas a la promoción
-        Set<Sucursal> sucursalesActuales = categoria.getSucursales();
+        // Obtener todas las subcategorías actuales asociadas a la categoría
+        Set<Categoria> subcategoriasActuales = new HashSet<>(categoria.getSubCategorias());
 
-        // Eliminar las relaciones entre las sucursales y la promoción
-        for (Sucursal sucursal : sucursalesActuales) {
-            sucursal.getPromociones().remove(categoria);
-            sucursalRepository.save(sucursal); // Guardar la sucursal actualizada
+        // Limpiar todas las subcategorías asociadas a la categoría
+        categoria.getSubCategorias().clear();
+
+        // Guardar la categoría actualizada en la base de datos para que las subcategorías se desvinculen
+        categoriaRepository.save(categoria);
+
+        // Eliminar las relaciones entre las subcategorías y la categoría
+        for (Categoria subcategoria : subcategoriasActuales) {
+            subcategoria.setParent(null); // Eliminar la relación padre-hijo
+            categoriaRepository.save(subcategoria); // Guardar la subcategoría actualizada
         }
 
-        // Limpiar todas las sucursales asociadas a la promoción
-        categoria.getSucursales().clear();
-
-        // Agregar las nuevas sucursales proporcionadas en la solicitud
-        Set<Sucursal> sucursales = request.getSucursales();
-        Set<Sucursal> sucursalesPersistidas = new HashSet<>();
-
-        if (sucursales != null && !sucursales.isEmpty()) {
-            for (Sucursal sucursal : sucursales) {
-                Sucursal sucursalBd = sucursalRepository.findById(sucursal.getId())
-                        .orElseThrow(() -> new RuntimeException("La sucursal con id " + sucursal.getId() + " no se ha encontrado"));
-                sucursalBd.getCategorias().add(categoria);
-                sucursalesPersistidas.add(sucursalBd);
+        // Eliminar las subcategorías que ya no están en la categoría
+        for (Categoria subcategoria : subcategoriasActuales) {
+            if (!request.getSubCategorias().contains(subcategoria)) {
+                categoriaRepository.delete(subcategoria);
             }
-            categoria.setSucursales(sucursalesPersistidas);
         }
 
-        return super.update(request, id);
+        // Agregar las nuevas subcategorías proporcionadas en la solicitud
+        Set<Categoria> subcategorias = request.getSubCategorias();
+        Set<Categoria> subcategoriasPersistidas = new HashSet<>();
+
+        if (subcategorias != null && !subcategorias.isEmpty()) {
+            for (Categoria subcategoria : subcategorias) {
+                if (subcategoria.getId() != null) {
+                    // Si la subcategoría ya existe, obtenerla y actualizarla
+                    Categoria subcategoriaBd = categoriaRepository.findById(subcategoria.getId())
+                            .orElseThrow(() -> new RuntimeException("La subcategoría con id " + subcategoria.getId() + " no se ha encontrado"));
+                    subcategoriaBd.setDenominacion(subcategoria.getDenominacion());
+                    subcategoriaBd.setEsInsumo(request.isEsInsumo());
+                    subcategoriaBd.setParent(categoria); // Establecer la relación padre-hijo
+                    subcategoriasPersistidas.add(subcategoriaBd);
+                } else {
+                    // Si la subcategoría es nueva, solo agregarla a la categoría
+                    subcategoria.setParent(categoria); // Establecer la relación padre-hijo
+                    subcategoria.setEsInsumo(request.isEsInsumo());
+                    subcategoriasPersistidas.add(subcategoria);
+                }
+            }
+            categoria.setSubCategorias(subcategoriasPersistidas);
+        }
+
+        // Actualizar otras propiedades de la categoría si es necesario
+        categoria.setEsInsumo(request.isEsInsumo());
+        categoria.setDenominacion(request.getDenominacion());
+
+        // Guardar la categoría actualizada en la base de datos
+        return categoriaRepository.save(categoria);
     }
+
 }
 

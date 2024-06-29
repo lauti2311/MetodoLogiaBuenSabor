@@ -1,7 +1,6 @@
 package com.example.buensaboruno.domain.dto.domicilio;
 
 
-
 import com.example.buensaboruno.domain.dto.BaseDto;
 import com.example.buensaboruno.domain.dto.localidad.LocalidadFullDto;
 import lombok.AllArgsConstructor;

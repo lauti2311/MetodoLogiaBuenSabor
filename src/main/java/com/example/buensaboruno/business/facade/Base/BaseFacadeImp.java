@@ -4,7 +4,11 @@ import com.example.buensaboruno.business.mapper.BaseMapper;
 import com.example.buensaboruno.business.service.Base.BaseService;
 import com.example.buensaboruno.domain.dto.BaseDto;
 import com.example.buensaboruno.domain.entities.Base;
+import com.example.buensaboruno.domain.entities.Factura;
+import com.example.buensaboruno.domain.entities.Pedido;
+import com.example.buensaboruno.domain.enums.Estado;
 
+import java.io.ByteArrayOutputStream;
 import java.io.Serializable;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -54,5 +58,4 @@ public abstract class BaseFacadeImp <E extends Base,D extends BaseDto,ID extends
         var entityUpdated = baseService.update(entityToUpdate, id);
         return baseMapper.toDTO(entityUpdated);
     }
-
 }

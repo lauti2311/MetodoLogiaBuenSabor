@@ -1,9 +1,9 @@
 package com.example.buensaboruno.domain.dto.articuloInsumo;
 
-
 import com.example.buensaboruno.domain.dto.BaseDto;
 import com.example.buensaboruno.domain.dto.categoria.CategoriaCreateDto;
 import com.example.buensaboruno.domain.dto.imagen.ImagenDto;
+import com.example.buensaboruno.domain.dto.sucursal.SucursalShortDto;
 import com.example.buensaboruno.domain.dto.unidadMedida.UnidadMedidaFullDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -24,11 +24,14 @@ public class ArticuloInsumoFullDto extends BaseDto {
     private Double precioCompra;
     private Integer stockActual;
     private Integer stockMaximo;
+    private Integer stockMinimo;
     private Boolean esParaElaborar;
     //de unidadMedida
     private UnidadMedidaFullDto unidadMedida;
     //de categoria
     private CategoriaCreateDto categoria;
     private Set<ImagenDto> imagenes;
+    //sucursal
+    private SucursalShortDto sucursal;
 
 }

@@ -1,6 +1,5 @@
 package com.example.buensaboruno.domain.dto.provincia;
 
-
 import com.example.buensaboruno.domain.dto.BaseDto;
 import com.example.buensaboruno.domain.dto.pais.PaisFullDto;
 import lombok.AllArgsConstructor;

@@ -8,6 +8,7 @@ import com.example.buensaboruno.presentation.rest.base.BaseControllerImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,5 +27,33 @@ public class LocalidadController extends BaseControllerImpl<Localidad, Localidad
     public ResponseEntity<List<LocalidadFullDto>> getByProvincia(@PathVariable Long idProvincia) {
         logger.info("INICIO GET BY PROVINCIA");
         return ResponseEntity.ok(facade.findByProvinciaId(idProvincia));
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<LocalidadFullDto> getById(@PathVariable Long id){
+        return super.getById(id);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<LocalidadFullDto>> getAll() {
+        return super.getAll();
+    }
+
+    @PostMapping()
+//    @PreAuthorize("hasAnyAuthority('ADMIN', 'SUPERADMIN')")
+    public ResponseEntity<LocalidadFullDto> create(@RequestBody LocalidadFullDto entity){
+        return super.create(entity);
+    }
+
+    @PutMapping("/{id}")
+//    @PreAuthorize("hasAnyAuthority('ADMIN', 'SUPERADMIN')")
+    public ResponseEntity<LocalidadFullDto> edit(@RequestBody LocalidadFullDto entity, @PathVariable Long id){
+        return super.edit(entity, id);
+    }
+
+    @DeleteMapping("/{id}")
+//    @PreAuthorize("hasAnyAuthority('ADMIN', 'SUPERADMIN')")
+    public ResponseEntity<?> deleteById(@PathVariable Long id){
+        return super.deleteById(id);
     }
 }

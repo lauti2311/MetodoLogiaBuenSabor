@@ -27,6 +27,10 @@ public class SucursalFacadeImp extends BaseFacadeImp<Sucursal, SucursalFullDto,L
         super(baseService, baseMapper);
     }
 
+    public List<SucursalFullDto> sucursalEmpresa(Long idEmpresa) {
+        return this.sucursalService.sucursalEmpresa(idEmpresa);
+    }
+
 
     @Override
     public SucursalFullDto createSucursal(SucursalFullDto dto) {

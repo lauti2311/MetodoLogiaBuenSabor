@@ -1,6 +1,5 @@
 package com.example.buensaboruno.domain.dto.categoria;
 
-
 import com.example.buensaboruno.domain.dto.BaseDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

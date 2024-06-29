@@ -1,6 +1,5 @@
 package com.example.buensaboruno.domain.dto.empleado;
 
-
 import com.example.buensaboruno.domain.dto.BaseDto;
 import com.example.buensaboruno.domain.enums.Rol;
 import lombok.AllArgsConstructor;

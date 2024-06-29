@@ -1,6 +1,5 @@
 package com.example.buensaboruno.domain.dto.factura;
 
-
 import com.example.buensaboruno.domain.dto.BaseDto;
 import com.example.buensaboruno.domain.enums.FormaPago;
 import lombok.AllArgsConstructor;

@@ -1,10 +1,10 @@
 package com.example.buensaboruno.domain.dto.articuloManufacturado;
 
-
 import com.example.buensaboruno.domain.dto.BaseDto;
 import com.example.buensaboruno.domain.dto.articuloManufacturadoDetalle.ArticuloManufacturadoDetalleFullDto;
 import com.example.buensaboruno.domain.dto.categoria.CategoriaFullDto;
 import com.example.buensaboruno.domain.dto.imagen.ImagenDto;
+import com.example.buensaboruno.domain.dto.sucursal.SucursalShortDto;
 import com.example.buensaboruno.domain.dto.unidadMedida.UnidadMedidaFullDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -33,4 +33,6 @@ public class ArticuloManufacturadoFullDto extends BaseDto {
     private UnidadMedidaFullDto unidadMedida;
     //de articuloManufacturadoDetalle
     private Set<ArticuloManufacturadoDetalleFullDto> articuloManufacturadoDetalles;
+    //sucursal
+    private SucursalShortDto sucursal;
 }

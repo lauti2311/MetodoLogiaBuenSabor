@@ -12,5 +12,5 @@ import java.util.Map;
 
 public interface ClienteService extends BaseService<Cliente, Long> {
 
-
+    Cliente findByEmail(String email);
 }

@@ -1,11 +1,15 @@
 package com.example.buensaboruno.business.service.Imp;
 
 
+import com.example.buensaboruno.business.mapper.ArticuloManufacturadoMapper;
 import com.example.buensaboruno.business.service.ArticuloManufacturadoService;
 import com.example.buensaboruno.business.service.Base.BaseServiceImpl;
 import com.example.buensaboruno.business.service.CloudinaryService;
+import com.example.buensaboruno.domain.dto.articuloManufacturado.ArticuloManufacturadoFullDto;
 import com.example.buensaboruno.domain.entities.ArticuloManufacturado;
 import com.example.buensaboruno.domain.entities.ImagenArticulo;
+import com.example.buensaboruno.repositories.ArticuloInsumoRepository;
+import com.example.buensaboruno.repositories.ArticuloManufacturadoDetalleRepository;
 import com.example.buensaboruno.repositories.ArticuloManufacturadoRepository;
 import com.example.buensaboruno.repositories.ImagenArticuloRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +31,20 @@ public class ArticuloManufacturadoServiceImpl extends BaseServiceImpl<ArticuloMa
     ImagenArticuloRepository imagenArticuloRepository;
     @Autowired
     private CloudinaryService cloudinaryService; // Servicio para interactuar con Cloudinary
+    @Autowired
+    private ArticuloInsumoRepository articuloInsumoRepository;
+    @Autowired
+    private ArticuloManufacturadoRepository articuloManufacturadoRepository;
+    @Autowired
+    private ArticuloManufacturadoDetalleRepository articuloManufacturadoDetalleRepository;
+    @Autowired
+    private ArticuloManufacturadoMapper articuloManufacturadoMapper;
+
+    @Override
+    public List<ArticuloManufacturadoFullDto> manufacturados(Long idSucursal) {
+        List<ArticuloManufacturado> manufacturados = this.articuloManufacturadoRepository.manufacturados(idSucursal);
+        return articuloManufacturadoMapper.manufacturadosToManufacturadoFullDtos(manufacturados);
+    }
     @Override
     public ResponseEntity<List<Map<String, Object>>> getAllImagesByArticuloManufacturadoId(Long id) {
         try {
