@@ -21,4 +21,5 @@ public class CategoriaCreateDto extends BaseDto {
     private Set<SubCategoriaFullDto> subCategorias;
     private Set<SucursalShortDto> sucursales;
     private boolean esInsumo;
+    private Long categoriaPadreId;
 }
