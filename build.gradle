@@ -63,7 +63,7 @@ dependencies {
 	//implementation 'org.springframework.boot:spring-boot-starter-security'
 
 	//SQL
-	implementation 'mysql:mysql-connector-java:8.0.33'
+	implementation 'mysql:mysql-connector-java:8.0.32'
 
 // EXCEL
 	implementation 'org.apache.poi:poi-ooxml:5.2.2'
