@@ -7,7 +7,7 @@ import com.example.buensaboruno.domain.entities.Cliente;
 import com.example.buensaboruno.business.service.Imp.ClienteServiceImpl;
 import com.example.buensaboruno.presentation.rest.base.BaseControllerImpl;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
+//import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

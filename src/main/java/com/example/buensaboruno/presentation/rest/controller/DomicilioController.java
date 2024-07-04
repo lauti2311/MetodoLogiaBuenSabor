@@ -8,7 +8,7 @@ import com.example.buensaboruno.domain.entities.Domicilio;
 import com.example.buensaboruno.business.service.Imp.DomicilioServiceImpl;
 import com.example.buensaboruno.presentation.rest.base.BaseControllerImpl;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
+//import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

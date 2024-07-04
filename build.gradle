@@ -72,8 +72,10 @@ dependencies {
 	//mercado pago
 	implementation 'com.mercadopago:sdk-java:2.1.24'
 
-	implementation 'org.springframework.boot:spring-boot-starter-security'
-	implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
+	//implementation 'org.springframework.boot:spring-boot-starter-security'
+	//implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
+	implementation 'org.springframework.boot:spring-boot-starter-mail'
+
 
 	//PDF
 	implementation 'com.lowagie:itext:2.1.7'
