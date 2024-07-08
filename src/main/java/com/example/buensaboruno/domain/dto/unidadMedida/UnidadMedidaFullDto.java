@@ -1,6 +1,5 @@
 package com.example.buensaboruno.domain.dto.unidadMedida;
 
-
 import com.example.buensaboruno.domain.dto.BaseDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

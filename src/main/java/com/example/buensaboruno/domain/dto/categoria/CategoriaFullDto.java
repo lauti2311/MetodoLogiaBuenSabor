@@ -1,6 +1,5 @@
 package com.example.buensaboruno.domain.dto.categoria;
 
-
 import com.example.buensaboruno.domain.dto.BaseDto;
 import com.example.buensaboruno.domain.dto.articuloInsumo.ArticuloInsumoFullDto;
 import com.example.buensaboruno.domain.dto.articuloManufacturado.ArticuloManufacturadoFullDto;

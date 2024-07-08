@@ -1,6 +1,5 @@
 package com.example.buensaboruno.domain.dto.articuloInsumo;
 
-
 import com.example.buensaboruno.domain.dto.BaseDto;
 import com.example.buensaboruno.domain.dto.categoria.CategoriaShortDto;
 import com.example.buensaboruno.domain.dto.unidadMedida.UnidadMedidaFullDto;
@@ -21,6 +20,7 @@ public class ArticuloInsumoShortDto extends BaseDto {
     private Double precioCompra;
     private Integer stockActual;
     private Integer stockMaximo;
+    private Integer stockMinimo;
     private Boolean esParaElaborar;
     private UnidadMedidaFullDto unidadMedida;
     private CategoriaShortDto categoria;

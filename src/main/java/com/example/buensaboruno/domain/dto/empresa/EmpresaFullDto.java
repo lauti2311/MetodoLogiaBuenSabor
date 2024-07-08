@@ -1,6 +1,5 @@
 package com.example.buensaboruno.domain.dto.empresa;
 
-
 import com.example.buensaboruno.domain.dto.BaseDto;
 import com.example.buensaboruno.domain.dto.imagen.ImagenDto;
 import com.example.buensaboruno.domain.dto.sucursal.SucursalFullDto;

@@ -9,8 +9,10 @@ import java.util.List;
 
 @Repository
 public interface CategoriaRepository extends BaseRepository<Categoria,Long>{
-    @Query("SELECT c FROM Categoria c LEFT JOIN FETCH c.sucursales WHERE c.id = :id")
-    Categoria findWithSucursalesById(@Param("id") Long id);
-    @Query("SELECT c FROM Categoria c   WHERE c.subCategorias IS NULL")
-    List<Categoria> findWithSucursalesById();
+    @Query("SELECT c FROM Categoria c JOIN c.sucursales s WHERE s.id = :idSucursal AND c.eliminado = false")
+    List<Categoria> categoriaSucursal(@Param("idSucursal") Long idSucursal);
+    @Query("SELECT c FROM Categoria c JOIN c.sucursales s WHERE s.id = :idSucursal AND c.esInsumo = true AND c.eliminado = false")
+    List<Categoria> categoriaInsumosSucursal(@Param("idSucursal") Long idSucursal);
+    @Query("SELECT c FROM Categoria c JOIN c.sucursales s WHERE s.id = :idSucursal AND c.esInsumo = false AND c.eliminado = false")
+    List<Categoria> categoriaManufacturadosSucursal(@Param("idSucursal") Long idSucursal);
 }

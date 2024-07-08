@@ -29,6 +29,15 @@ public class SucursalController extends BaseControllerImpl<Sucursal, SucursalFul
     @Autowired
     private Sucursalfacade sucursalfacade;
 
+    @GetMapping("/empresa/{idEmpresa}")
+    public ResponseEntity<List<SucursalFullDto>> sucursalEmpresa(@PathVariable Long idEmpresa) {
+        List<SucursalFullDto> sucursales = sucursalfacade.sucursalEmpresa(idEmpresa);
+        if (sucursales != null && !sucursales.isEmpty()) {
+            return ResponseEntity.ok(sucursales);
+        } else {
+            return ResponseEntity.noContent().build();
+        }
+    }
     @Override
     @PostMapping()
     public ResponseEntity<SucursalFullDto> create(@RequestBody SucursalFullDto dto) {
@@ -78,16 +87,6 @@ public class SucursalController extends BaseControllerImpl<Sucursal, SucursalFul
         } catch (Exception e) {
             e.printStackTrace();
             return null; // Manejo básico de errores, se puede mejorar para devolver una respuesta más específica
-        }
-    }
-
-    @GetMapping("/empresa/{empresaId}")
-    public ResponseEntity<List<SucursalFullDto>> sucursalEmpresa(@PathVariable Long empresaId) {
-        List<SucursalFullDto> sucursales = sucursalfacade.sucursalEmpresa(empresaId);
-        if (sucursales != null && !sucursales.isEmpty()) {
-            return ResponseEntity.ok(sucursales);
-        } else {
-            return ResponseEntity.noContent().build();
         }
     }
 }

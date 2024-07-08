@@ -27,23 +27,22 @@ public class PromocionServiceImpl extends BaseServiceImpl<Promocion, Long> imple
 
     @Autowired
     PromocionRepository promocionRepository;
+    @Autowired
+    PromocionDetalleRepository promocionDetalleRepository;
 
     @Autowired
     SucursalRepository sucursalRepository;
-
-    @Autowired
-    PromocionMapper promocionMapper;
     @Autowired
     ArticuloRepository articuloRepository;
-
     @Autowired
-    PromocionDetalleRepository promocionDetalleRepository;
+    PromocionMapper promocionMapper;
+
+
     @Override
     public List<PromocionFullDto> promocionSucursal(Long idSucursal) {
         List<Promocion> promociones = this.promocionRepository.promocionSucursal(idSucursal);
         return promocionMapper.promocionesToPromocionFullDto(promociones);
     }
-
     @Override
     public Promocion create(Promocion request) {
         // Guardar la instancia de Promocion en la base de datos para asegurarse de que esté gestionada por el EntityManager

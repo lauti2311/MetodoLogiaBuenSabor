@@ -62,7 +62,31 @@ dependencies {
 	//implementation 'org.springframework.boot:spring-boot-starter-oauth2-authorization-server'
 	//implementation 'org.springframework.boot:spring-boot-starter-security'
 
+	//SQL
+	implementation 'mysql:mysql-connector-java:8.0.32'
 
+// EXCEL
+	implementation 'org.apache.poi:poi-ooxml:5.2.2'
+	implementation 'com.lowagie:itext:2.1.7'
+
+	//mercado pago
+	implementation 'com.mercadopago:sdk-java:2.1.24'
+
+	//implementation 'org.springframework.boot:spring-boot-starter-security'
+	//implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
+	implementation 'org.springframework.boot:spring-boot-starter-mail'
+
+
+	//PDF
+	implementation 'com.lowagie:itext:2.1.7'
+
+	//EMAIL
+	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-mail', version: '3.3.0'
+	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-thymeleaf', version: '3.3.0'
+	testImplementation 'org.springframework:spring-test:6.1.6'
+
+	//ENVERS
+	implementation 'org.hibernate.orm:hibernate-envers:6.4.4.Final'
 }
 
 tasks.named('test') {

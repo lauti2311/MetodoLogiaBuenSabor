@@ -1,6 +1,5 @@
 package com.example.buensaboruno.domain.dto.articuloManufacturadoDetalle;
 
-
 import com.example.buensaboruno.domain.dto.BaseDto;
 import com.example.buensaboruno.domain.dto.articuloInsumo.ArticuloInsumoShortDto;
 import lombok.AllArgsConstructor;

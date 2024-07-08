@@ -38,10 +38,9 @@ public class Pedido extends Base{
     @ManyToOne
     private Sucursal sucursal;
 
-    @OneToOne(mappedBy = "pedido", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @ToString.Exclude
-    @JsonBackReference(value = "pedido_factura")
+    @OneToOne
     private Factura factura;
+
 
     @ManyToOne
     @JoinColumn(name = "cliente_id")

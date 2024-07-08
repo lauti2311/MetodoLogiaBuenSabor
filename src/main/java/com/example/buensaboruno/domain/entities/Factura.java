@@ -27,9 +27,9 @@ public class Factura extends Base{
     private FormaPago formaPago;
     private Double totalVenta;
 
-    @OneToOne
-    @JoinColumn(name = "pedido_id")
-    private Pedido pedido;
+//    @OneToOne
+//    @JoinColumn(name = "pedido_id")
+//    private Pedido pedido;
 
 
 }

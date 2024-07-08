@@ -1,6 +1,5 @@
 package com.example.buensaboruno.domain.dto.usuarioEmpleado;
 
-
 import com.example.buensaboruno.domain.dto.BaseDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

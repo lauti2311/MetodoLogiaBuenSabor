@@ -9,16 +9,15 @@ import com.example.buensaboruno.domain.entities.Empresa;
 import com.example.buensaboruno.domain.entities.ImagenEmpresa;
 import com.example.buensaboruno.repositories.EmpresaRepository;
 import com.example.buensaboruno.repositories.ImagenEmpresaRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 @Service
@@ -34,11 +33,49 @@ public class EmpresaServiceImpl extends BaseServiceImpl<Empresa, Long> implement
     ImagenEmpresaRepository imagenEmpresaRepository;
     @Autowired
     private CloudinaryService cloudinaryService;
+    private static final Logger logger = LoggerFactory.getLogger(BaseServiceImpl.class);
     @Override
     public Empresa addSucursal(Long idEmpresa, Long idSucursal) {
         Empresa empresa = empresaRepository.findWithSucursalesById(idEmpresa);
         empresa.getSucursales().add(sucursalService.getById(idSucursal));
         return empresa;
+    }
+
+    @Override
+    public Empresa update(Empresa updatedEmpresa, Long idEmpresa) {
+        // Buscar la empresa existente en el repositorio
+        Empresa existingEmpresa = empresaRepository.findById(idEmpresa)
+                .orElseThrow(() -> new RuntimeException("Empresa no encontrada"));
+
+        // Actualizar los campos básicos de la empresa
+        existingEmpresa.setNombre(updatedEmpresa.getNombre());
+        existingEmpresa.setCuil(updatedEmpresa.getCuil());
+        existingEmpresa.setRazonSocial(updatedEmpresa.getRazonSocial());
+
+        // Actualizar las imágenes de la empresa
+        Set<ImagenEmpresa> nuevasImagenes = updatedEmpresa.getImagenes();
+        Set<ImagenEmpresa> imagenesAEliminar = new HashSet<>(existingEmpresa.getImagenes());
+        imagenesAEliminar.removeAll(nuevasImagenes);
+        imagenesAEliminar.forEach(imagen -> imagenEmpresaRepository.delete(imagen));
+        // Loggear las imágenes que se van a eliminar
+        logger.info("Imágenes a eliminar de la empresa:");
+        imagenesAEliminar.forEach(imagen -> logger.info("ID: {}, URL: {}", imagen.getId(), imagen.getUrl()));
+
+        // Verificar y guardar las nuevas imágenes
+        Set<ImagenEmpresa> imagenesAGuardar = new HashSet<>();
+        for (ImagenEmpresa imagen : nuevasImagenes) {
+            // Verificar si el ID y la URL no son nulos
+            if (imagen.getId() != null && imagen.getUrl() != null) {
+                imagenesAGuardar.add(imagen);
+            }
+        }
+        existingEmpresa.setImagenes(imagenesAGuardar);
+        // Loggear las imágenes de la empresa
+        logger.info("Imágenes de la empresa:");
+        imagenesAGuardar.forEach(imagen -> logger.info("ID: {}, URL: {}", imagen.getId(), imagen.getUrl()));
+
+        // Guardar la empresa actualizada en el repositorio
+        return empresaRepository.save(existingEmpresa);
     }
 
     @Override
@@ -65,6 +102,8 @@ public class EmpresaServiceImpl extends BaseServiceImpl<Empresa, Long> implement
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
+
+
 
     @Override
     public ResponseEntity<String> uploadImages(MultipartFile[] files, Long idEmpresa) {

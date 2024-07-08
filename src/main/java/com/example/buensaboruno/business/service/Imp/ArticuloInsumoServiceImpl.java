@@ -1,9 +1,11 @@
 package com.example.buensaboruno.business.service.Imp;
 
 
+import com.example.buensaboruno.business.mapper.ArticuloInsumoMapper;
 import com.example.buensaboruno.business.service.ArticuloInsumoService;
 import com.example.buensaboruno.business.service.Base.BaseServiceImpl;
 import com.example.buensaboruno.business.service.CloudinaryService;
+import com.example.buensaboruno.domain.dto.articuloInsumo.ArticuloInsumoFullDto;
 import com.example.buensaboruno.domain.entities.ArticuloInsumo;
 import com.example.buensaboruno.domain.entities.ImagenArticulo;
 import com.example.buensaboruno.repositories.ArticuloInsumoRepository;
@@ -28,11 +30,72 @@ public class ArticuloInsumoServiceImpl extends BaseServiceImpl<ArticuloInsumo, L
 
     @Autowired
     private CloudinaryService cloudinaryService; // Servicio para interactuar con Cloudinary
+    @Autowired
+    private ArticuloInsumoRepository articuloInsumoRepository;
+    @Autowired
+    private ArticuloInsumoMapper articuloInsumoMapper;
+
+    @Override
+    public ArticuloInsumo update(ArticuloInsumo updatedArticulo, Long articuloId) {
+        ArticuloInsumo existingArticulo = articuloInsumoRepository.findById(articuloId)
+                .orElseThrow(() -> new RuntimeException("Articulo not found"));
+
+        // Actualizar los campos básicos del artículo
+        existingArticulo.setDenominacion(updatedArticulo.getDenominacion());
+        existingArticulo.setEsParaElaborar(updatedArticulo.getEsParaElaborar());
+        existingArticulo.setPrecioCompra(updatedArticulo.getPrecioCompra());
+        existingArticulo.setPrecioVenta(updatedArticulo.getPrecioVenta());
+        existingArticulo.setUnidadMedida(updatedArticulo.getUnidadMedida());
+        existingArticulo.setCategoria(updatedArticulo.getCategoria());
+        existingArticulo.setSucursal(updatedArticulo.getSucursal());
+        existingArticulo.setStockActual(updatedArticulo.getStockActual());
+        existingArticulo.setStockMinimo(updatedArticulo.getStockMinimo());
+        existingArticulo.setStockMaximo(updatedArticulo.getStockMaximo());
+        return articuloInsumoRepository.save(existingArticulo);
+    }
+
+    @Override
+    public List<ArticuloInsumoFullDto> insumosParaElaborar(Long idSucursal) {
+        List<ArticuloInsumo> insumos = this.articuloInsumoRepository.insumosParaElaborar(idSucursal);
+        return articuloInsumoMapper.insumosToInsumoFullDtos(insumos);
+    }
+    @Override
+    public List<ArticuloInsumoFullDto> insumos(Long idSucursal) {
+        List<ArticuloInsumo> insumos = this.articuloInsumoRepository.insumos(idSucursal);
+        return articuloInsumoMapper.insumosToInsumoFullDtos(insumos);
+    }
+    @Override
+    public ResponseEntity<Number> descontarStock(ArticuloInsumo articuloInsumo, Integer cantidad) {
+        try {
+            // Obtener el insumo del artículo
+            ArticuloInsumo insumo = articuloInsumo;
+
+            // Descontar la cantidad del stock actual
+            int stockDescontado = insumo.getStockActual() - cantidad;
+
+            // Asignar el nuevo stock al insumo
+            insumo.setStockActual(stockDescontado);
+
+            // Retornar el stock actualizado
+            return ResponseEntity.ok(stockDescontado);
+        } catch (Exception e) {
+            // En caso de error, imprimir la excepción y retornar un mensaje de error
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+
+
     @Override
     public ResponseEntity<List<Map<String, Object>>> getAllImagesByInsumoId(Long id) {
         try {
             // Consultar todas las imágenes desde la base de datos
-            List<ImagenArticulo> images = baseRepository.getById(id).getImagenes().stream().toList();
+            List<ImagenArticulo> images = baseRepository.getById(id)
+                    .getImagenes()
+                    .stream()
+                    // Filtrar las imágenes no eliminadas
+                    .filter(image -> !image.isEliminado())
+                    .toList();
             List<Map<String, Object>> imageList = new ArrayList<>();
 
             // Convertir cada imagen en un mapa de atributos para devolver como JSON
@@ -50,16 +113,13 @@ public class ArticuloInsumoServiceImpl extends BaseServiceImpl<ArticuloInsumo, L
             e.printStackTrace();
             // Devolver un error interno del servidor (500) si ocurre alguna excepción
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
-        }    }
+        }
+    }
 
     @Override
     public ResponseEntity<String> uploadImages(MultipartFile[] files, Long idArticuloInsumo) {
         List<String> urls = new ArrayList<>();
         var insumo = baseRepository.getById(idArticuloInsumo);
-        //por medio de un condicional limitamos la carga de imagenes a un maximo de 3 por aticulo
-        //en caso de tratar de excer ese limite arroja un codigo 413 con el mensaje La cantidad maxima de imagenes es 3
-        if(insumo.getImagenes().size() >= 3)
-            return ResponseEntity.status(HttpStatus.PAYLOAD_TOO_LARGE).body("La cantidad maxima de imagenes es 3");
         try {
             // Iterar sobre cada archivo recibido
             for (MultipartFile file : files) {
@@ -96,7 +156,8 @@ public class ArticuloInsumoServiceImpl extends BaseServiceImpl<ArticuloInsumo, L
             e.printStackTrace();
             // Devolver un error (400) si ocurre alguna excepción durante el proceso de subida
             return new ResponseEntity<>("{\"status\":\"ERROR\", \"message\":\"" + e.getMessage() + "\"}", HttpStatus.BAD_REQUEST);
-        }    }
+        }
+    }
 
     @Override
     public ResponseEntity<String> deleteImage(String publicId, Long id) {
@@ -105,8 +166,10 @@ public class ArticuloInsumoServiceImpl extends BaseServiceImpl<ArticuloInsumo, L
             imagenArticuloRepository.deleteById(id);
 
             // Llamar al servicio de Cloudinary para eliminar la imagen por su publicId
-            return cloudinaryService.deleteImage(publicId, id);
+            ResponseEntity<String> cloudinaryResponse = cloudinaryService.deleteImage(publicId, id);
 
+            // Retornar la respuesta del servicio de Cloudinary junto con la respuesta del repositorio
+            return new ResponseEntity<>("{\"status\":\"SUCCESS\", \"message\":\"Imagen eliminada exitosamente.\"}", HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
             // Devolver un error (400) si ocurre alguna excepción durante la eliminación

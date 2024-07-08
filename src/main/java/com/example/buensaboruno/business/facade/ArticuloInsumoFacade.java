@@ -3,6 +3,7 @@ package com.example.buensaboruno.business.facade;
 
 import com.example.buensaboruno.business.facade.Base.BaseFacade;
 import com.example.buensaboruno.domain.dto.articuloInsumo.ArticuloInsumoFullDto;
+import com.example.buensaboruno.domain.entities.ArticuloInsumo;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -17,4 +18,7 @@ public interface ArticuloInsumoFacade extends BaseFacade<ArticuloInsumoFullDto,L
     ResponseEntity<String> uploadImages(MultipartFile[] files, Long id);
     // Método para eliminar una imagen por su identificador público y UUID
     ResponseEntity<String> deleteImage(String publicId, Long id);
+    ResponseEntity<Number> descontarStock(ArticuloInsumo articuloInsumo, Integer cantidad);
+    List<ArticuloInsumoFullDto> insumosParaElaborar(Long idSucursal);
+    List<ArticuloInsumoFullDto> insumos(Long idSucursal);
 }
