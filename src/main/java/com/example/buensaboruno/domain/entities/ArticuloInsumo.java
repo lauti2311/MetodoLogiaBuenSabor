@@ -23,7 +23,4 @@ public class ArticuloInsumo extends Articulo {
     private Integer stockMinimo;
     private Boolean esParaElaborar;
 
-    @ManyToOne(cascade = CascadeType.ALL) // Cascada para persistir la UnidadMedida automáticamente
-    @JoinColumn(name = "unidad_medida_id", nullable = false)
-    private UnidadMedida unidadMedida;
 }
