@@ -16,11 +16,14 @@ import java.util.Set;
 @ToString
 @SuperBuilder
 @Audited
-public class ArticuloInsumo extends Articulo{
+public class ArticuloInsumo extends Articulo {
     private Double precioCompra;
     private Integer stockActual;
     private Integer stockMaximo;
     private Integer stockMinimo;
     private Boolean esParaElaborar;
 
+    @ManyToOne(cascade = CascadeType.ALL) // Cascada para persistir la UnidadMedida automáticamente
+    @JoinColumn(name = "unidad_medida_id", nullable = false)
+    private UnidadMedida unidadMedida;
 }

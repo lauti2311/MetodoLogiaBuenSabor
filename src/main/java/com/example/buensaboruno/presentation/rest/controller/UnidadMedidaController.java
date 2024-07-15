@@ -14,12 +14,13 @@ import java.util.List;
 @RequestMapping("/unidadMedida")
 @CrossOrigin("*")
 public class UnidadMedidaController extends BaseControllerImpl<UnidadMedida, UnidadMedidaFullDto, Long, UnidadMedidaFacadeImp> {
-     public UnidadMedidaController(UnidadMedidaFacadeImp facade) {
-         super(facade);
-     }
+
+    public UnidadMedidaController(UnidadMedidaFacadeImp facade) {
+        super(facade);
+    }
 
     @GetMapping("/{id}")
-    public ResponseEntity<UnidadMedidaFullDto> getById(@PathVariable Long id){
+    public ResponseEntity<UnidadMedidaFullDto> getById(@PathVariable Long id) {
         return super.getById(id);
     }
 
@@ -30,19 +31,19 @@ public class UnidadMedidaController extends BaseControllerImpl<UnidadMedida, Uni
 
     @PostMapping()
 //    @PreAuthorize("hasAnyAuthority('ADMIN', 'SUPERADMIN')")
-    public ResponseEntity<UnidadMedidaFullDto> create(@RequestBody UnidadMedidaFullDto entity){
+    public ResponseEntity<UnidadMedidaFullDto> create(@RequestBody UnidadMedidaFullDto entity) {
         return super.create(entity);
     }
 
     @PutMapping("/{id}")
 //    @PreAuthorize("hasAnyAuthority('ADMIN', 'SUPERADMIN')")
-    public ResponseEntity<UnidadMedidaFullDto> edit(@RequestBody UnidadMedidaFullDto entity, @PathVariable Long id){
+    public ResponseEntity<UnidadMedidaFullDto> edit(@RequestBody UnidadMedidaFullDto entity, @PathVariable Long id) {
         return super.edit(entity, id);
     }
 
     @DeleteMapping("/{id}")
 //    @PreAuthorize("hasAnyAuthority('ADMIN', 'SUPERADMIN')")
-    public ResponseEntity<?> deleteById(@PathVariable Long id){
+    public ResponseEntity<?> deleteById(@PathVariable Long id) {
         return super.deleteById(id);
     }
 }
