@@ -6,7 +6,9 @@ import com.example.buensaboruno.business.service.ArticuloManufacturadoService;
 import com.example.buensaboruno.business.service.Base.BaseServiceImpl;
 import com.example.buensaboruno.business.service.CloudinaryService;
 import com.example.buensaboruno.domain.dto.articuloManufacturado.ArticuloManufacturadoFullDto;
+import com.example.buensaboruno.domain.entities.ArticuloInsumo;
 import com.example.buensaboruno.domain.entities.ArticuloManufacturado;
+import com.example.buensaboruno.domain.entities.ArticuloManufacturadoDetalle;
 import com.example.buensaboruno.domain.entities.ImagenArticulo;
 import com.example.buensaboruno.repositories.ArticuloInsumoRepository;
 import com.example.buensaboruno.repositories.ArticuloManufacturadoDetalleRepository;
@@ -18,10 +20,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 @Service
@@ -115,6 +114,31 @@ public class ArticuloManufacturadoServiceImpl extends BaseServiceImpl<ArticuloMa
             return new ResponseEntity<>("{\"status\":\"ERROR\", \"message\":\"" + e.getMessage() + "\"}", HttpStatus.BAD_REQUEST);
         }    }
 
+    // Método para crear un articulo manufacturado con su detalle
+    @Override
+    public ArticuloManufacturado create(ArticuloManufacturado request) {
+        Set<ArticuloManufacturadoDetalle> detalles = request.getArticuloManufacturadoDetalles(); // Obtener los detalles del articulo
+        Set<ArticuloManufacturadoDetalle> detallesPersistidos = new HashSet<>(); // Crear un conjunto para almacenar los detalles persistidos
+
+        if (detalles != null && !detalles.isEmpty()) {
+            for (ArticuloManufacturadoDetalle detalle : detalles) { // Iterar sobre cada detalle
+                ArticuloInsumo articuloInsumo = detalle.getArticuloInsumo();
+                if (articuloInsumo == null || articuloInsumo.getId() == null) {
+                    throw new RuntimeException("Id de articulo detalle nulo");
+                }
+                articuloInsumo = articuloInsumoRepository.findById(detalle.getArticuloInsumo().getId()) // Buscar el articulo por ID
+                        .orElseThrow(() -> new RuntimeException("No existe el articulo con id " + detalle.getArticuloInsumo().getId() ));// Lanzar una excepción si no se encuentra
+                detalle.setArticuloInsumo(articuloInsumo);
+                ArticuloManufacturadoDetalle savedDetalle = articuloManufacturadoDetalleRepository.save(detalle); // Guardar el detalle en la base de datos
+                detallesPersistidos.add(savedDetalle);
+            }
+            request.setArticuloManufacturadoDetalles(detallesPersistidos);
+        } else {
+            throw new IllegalArgumentException("Debe contener un detalle");
+        }
+
+        return articuloManufacturadoRepository.save(request);
+    }
     @Override
     public ResponseEntity<String> deleteImage(String publicId, Long id) {
         try {
