@@ -140,6 +140,41 @@ public class ArticuloManufacturadoServiceImpl extends BaseServiceImpl<ArticuloMa
         return articuloManufacturadoRepository.save(request);
     }
     @Override
+    public ArticuloManufacturado update(ArticuloManufacturado request, Long id) {
+        Optional<ArticuloManufacturado> optionalArticulo = articuloManufacturadoRepository.findById(id);
+        if (optionalArticulo.isEmpty()) {
+            throw new RuntimeException("No existe el articulo manufacturado con id " + id);
+        }
+
+        ArticuloManufacturado articuloManufacturado = optionalArticulo.get();
+        articuloManufacturado.setDenominacion(request.getDenominacion());
+        articuloManufacturado.setPrecioVenta(request.getPrecioVenta());
+        articuloManufacturado.setDescripcion(request.getDescripcion());
+        articuloManufacturado.setTiempoEstimadoMinutos(request.getTiempoEstimadoMinutos());
+        articuloManufacturado.setPreparacion(request.getPreparacion());
+        articuloManufacturado.setCategoria(request.getCategoria());
+        articuloManufacturado.setUnidadMedida(request.getUnidadMedida());
+
+        Set<ArticuloManufacturadoDetalle> detalles = request.getArticuloManufacturadoDetalles();
+        if (detalles != null && !detalles.isEmpty()) {
+            Set<ArticuloManufacturadoDetalle> detallesPersistidos = new HashSet<>();
+            for (ArticuloManufacturadoDetalle detalle : detalles) {
+                ArticuloInsumo articuloInsumo = detalle.getArticuloInsumo();
+                if (articuloInsumo == null || articuloInsumo.getId() == null) {
+                    throw new RuntimeException("Id de articulo detalle nulo");
+                }
+                articuloInsumo = articuloInsumoRepository.findById(detalle.getArticuloInsumo().getId())
+                        .orElseThrow(() -> new RuntimeException("No existe el articulo con id " + detalle.getArticuloInsumo().getId()));
+                detalle.setArticuloInsumo(articuloInsumo);
+                ArticuloManufacturadoDetalle savedDetalle = articuloManufacturadoDetalleRepository.save(detalle);
+                detallesPersistidos.add(savedDetalle);
+            }
+            articuloManufacturado.setArticuloManufacturadoDetalles(detallesPersistidos);
+        }
+
+        return articuloManufacturadoRepository.save(articuloManufacturado);
+    }
+    @Override
     public ResponseEntity<String> deleteImage(String publicId, Long id) {
         try {
             // Eliminar la imagen de la base de datos usando su identificador

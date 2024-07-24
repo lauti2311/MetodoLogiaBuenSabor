@@ -87,7 +87,7 @@ public class BuensaborunoApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(BuensaborunoApplication.class, args);
-		logger.info("Estoy activo en el main Alberto");
+		logger.info("Estoy activo");
 	}
 
 	@Bean
