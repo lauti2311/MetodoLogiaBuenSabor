@@ -46,7 +46,10 @@ public class Promocion  extends Base{
     @JoinColumn(name = "promocion_id")
     //SE AGREGA EL BUILDER.DEFAULT PARA QUE BUILDER NO SOBREESCRIBA LA INICIALIZACION DE LA LISTA
     @Builder.Default
-    private Set<PromocionDetalle> promocionDetalles = new HashSet<>();
+    private Set<PromocionDetalle> promocionDetalle = new HashSet<>();
+
+//    @OneToMany(mappedBy = "promocion", cascade = CascadeType.ALL, orphanRemoval = true)
+//    private Set<PromocionDetalle> promocionDetalle = new HashSet<>();
 
     @ManyToMany (mappedBy = "promociones")
     @Builder.Default
