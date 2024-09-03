@@ -61,4 +61,21 @@
 //    public WebSecurityCustomizer webSecurityCustomizer() {
 //        return (web) -> web.debug(webSecurityDebug);
 //    }
+
+//
+//    @Bean
+//    JwtAuthenticationConverter jwtAuthenticationConverter() {
+//        JwtGrantedAuthoritiesConverter converter = new JwtGrantedAuthoritiesConverter();
+//        converter.setAuthoritiesClaimName("https://apiauth.com/roles");
+//        converter.setAuthorityPrefix("");
+//
+//        JwtAuthenticationConverter jwtConverter = new JwtAuthenticationConverter();
+//        jwtConverter.setJwtGrantedAuthoritiesConverter(converter);
+//        return jwtConverter;
+//    }
+//
+//    @Bean
+//    public WebSecurityCustomizer webSecurityCustomizer() {
+//        return (web) -> web.debug(webSecurityDebug);
+//    }
 //}

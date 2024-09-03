@@ -84,7 +84,7 @@ public class PromocionServiceImpl extends BaseServiceImpl<Promocion, Long> imple
             }
             request.setPromocionDetalle(detallesPersistidos);
         } else {
-            throw new IllegalArgumentException("El pedido debe contener un detalle o más.");
+            throw new IllegalArgumentException("La promocion debe contener un detalle o más.");
         }
         return promocionPersistida;
     }
