@@ -16,7 +16,7 @@ import org.hibernate.envers.Audited;
 @ToString
 @Builder
 @Audited
-public class UsuarioCliente extends Base{
+public class Usuario extends Base{
     private String auth0Id;
     private String username;
     private String email;

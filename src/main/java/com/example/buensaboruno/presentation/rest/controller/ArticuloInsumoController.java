@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 //import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -61,19 +62,19 @@ public class ArticuloInsumoController extends BaseControllerImpl<ArticuloInsumo,
     }
 
     @PostMapping()
-//    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('EMPLEADO','ADMIN')")
     public ResponseEntity<ArticuloInsumoFullDto> create(@RequestBody ArticuloInsumoFullDto entity){
         return super.create(entity);
     }
 
     @PutMapping("/{id}")
-//    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('EMPLEADO','ADMIN')")
     public ResponseEntity<ArticuloInsumoFullDto> edit(@RequestBody ArticuloInsumoFullDto entity, @PathVariable Long id){
         return super.edit(entity, id);
     }
 
     @DeleteMapping("/{id}")
-//    @PreAuthorize("hasAnyAuthority('ADMIN', 'SUPERADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'SUPERADMIN')")
     public ResponseEntity<?> deleteById(@PathVariable Long id){
         return super.deleteById(id);
     }
@@ -102,7 +103,7 @@ public class ArticuloInsumoController extends BaseControllerImpl<ArticuloInsumo,
     }
     // Método POST para subir imágenes
     @PostMapping("/uploads")
-    //@PreAuthorize("hasAnyAuthority('ADMIN', 'SUPERADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'SUPERADMIN')")
     public ResponseEntity<String> uploadImages(
             @RequestParam(value = "uploads", required = true) MultipartFile[] files,
             @RequestParam(value = "id", required = true) Long idArticulo) {
@@ -116,7 +117,7 @@ public class ArticuloInsumoController extends BaseControllerImpl<ArticuloInsumo,
 
     // Método POST para eliminar imágenes por su publicId y Long
     @PostMapping("/deleteImg")
-//    @PreAuthorize("hasAnyAuthority('ADMIN', 'SUPERADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'SUPERADMIN')")
     public ResponseEntity<String> deleteById(
             @RequestParam(value = "publicId", required = true) String publicId,
             @RequestParam(value = "id", required = true) Long id) {
