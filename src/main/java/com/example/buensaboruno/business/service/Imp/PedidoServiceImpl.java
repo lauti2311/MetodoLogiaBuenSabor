@@ -48,49 +48,49 @@ public class PedidoServiceImpl extends BaseServiceImpl<Pedido, Long> implements 
         List<Pedido> pedidos = this.pedidoRepository.pedidosSucursal(idSucursal);
         return pedidoMapper.pedidosToPedidoFullDtos(pedidos);
     }
-//    @Override
-//    public Pedido create(Pedido request) {
-//        if (request.getSucursal() == null) {
-//            throw new RuntimeException("No se ha asignado una sucursal al pedido");
-//        }
-//        Sucursal sucursal = sucursalRepository.findById(request.getSucursal().getId())
-//                .orElseThrow(() -> new RuntimeException("La sucursal con id " + request.getSucursal().getId() + " no se ha encontrado"));
-//
-//        var domicilio = request.getDomicilio();
-//        if(domicilio != null){
-//            domicilio = domicilioRepository.save(domicilio);
-//        }
-//
-//        Set<DetallePedido> detalles = request.getDetallePedidos();
-//        Set<DetallePedido> detallesPersistidos = new HashSet<>();
-//
-//        if (detalles != null && !detalles.isEmpty()) {
-//            double costoTotal = 0;
-//            for (DetallePedido detalle : detalles) {
-//                Articulo articulo = detalle.getArticulo();
-//                if (articulo == null || articulo.getId() == null) {
-//                    throw new RuntimeException("El artículo del detalle no puede ser nulo.");
-//                }
-//                articulo = articuloRepository.findById(detalle.getArticulo().getId())
-//                        .orElseThrow(() -> new RuntimeException("Artículo con id " + detalle.getArticulo().getId() + " inexistente"));
-//                detalle.setArticulo(articulo);
-//                DetallePedido savedDetalle = detallePedidoRepository.save(detalle);
-//                costoTotal += calcularTotalCosto(articulo, detalle.getCantidad());
-//                descontarStock(articulo, detalle.getCantidad());
-//                detallesPersistidos.add(savedDetalle);
-//            }
-//            request.setTotalCosto(costoTotal);
-//            request.setDetallePedidos(detallesPersistidos);
-//        } else {
-//            throw new IllegalArgumentException("El pedido debe contener un detalle o más.");
-//        }
-//
-//        request.setDomicilio(domicilio);
-//        request.setSucursal(sucursal);
-//        request.setFechaPedido(LocalDate.now());
-//
-//        return pedidoRepository.save(request);
-//    }
+    @Override
+    public Pedido create(Pedido request) {
+        if (request.getSucursal() == null) {
+            throw new RuntimeException("No se ha asignado una sucursal al pedido");
+        }
+        Sucursal sucursal = sucursalRepository.findById(request.getSucursal().getId())
+                .orElseThrow(() -> new RuntimeException("La sucursal con id " + request.getSucursal().getId() + " no se ha encontrado"));
+
+        var domicilio = request.getDomicilio();
+        if(domicilio != null){
+            domicilio = domicilioRepository.save(domicilio);
+        }
+
+        Set<DetallePedido> detalles = request.getDetallePedidos();
+        Set<DetallePedido> detallesPersistidos = new HashSet<>();
+
+        if (detalles != null && !detalles.isEmpty()) {
+            double costoTotal = 0;
+            for (DetallePedido detalle : detalles) {
+                Articulo articulo = detalle.getArticulo();
+                if (articulo == null || articulo.getId() == null) {
+                    throw new RuntimeException("El artículo del detalle no puede ser nulo.");
+                }
+                articulo = articuloRepository.findById(detalle.getArticulo().getId())
+                        .orElseThrow(() -> new RuntimeException("Artículo con id " + detalle.getArticulo().getId() + " inexistente"));
+                detalle.setArticulo(articulo);
+                DetallePedido savedDetalle = detallePedidoRepository.save(detalle);
+                costoTotal += calcularTotalCosto(articulo, detalle.getCantidad());
+                descontarStock(articulo, detalle.getCantidad());
+                detallesPersistidos.add(savedDetalle);
+            }
+            request.setTotalCosto(costoTotal);
+            request.setDetallePedidos(detallesPersistidos);
+        } else {
+            throw new IllegalArgumentException("El pedido debe contener un detalle o más.");
+        }
+
+        request.setDomicilio(domicilio);
+        request.setSucursal(sucursal);
+        request.setFechaPedido(LocalDate.now());
+
+        return pedidoRepository.save(request);
+    }
 
     @Transactional
     public Articulo descontarStock(Articulo articulo, int cantidad) {

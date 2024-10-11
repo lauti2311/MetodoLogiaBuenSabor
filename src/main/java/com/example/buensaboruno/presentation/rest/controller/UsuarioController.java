@@ -1,27 +1,27 @@
 package com.example.buensaboruno.presentation.rest.controller;
 
-import com.example.buensaboruno.business.facade.imp.UsuarioClienteFacadeImp;
+import com.example.buensaboruno.business.facade.imp.UsuarioFacadeImp;
 import com.example.buensaboruno.domain.dto.usuarioCliente.UsuarioClienteFullDto;
-import com.example.buensaboruno.domain.entities.UsuarioCliente;
-import com.example.buensaboruno.business.service.Imp.UsuarioClienteServiceImpl;
+import com.example.buensaboruno.domain.entities.Usuario;
 import com.example.buensaboruno.presentation.rest.base.BaseControllerImpl;
 import org.springframework.http.ResponseEntity;
 //import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @CrossOrigin("*")
-@RequestMapping(path = "usuarios")
-public class UsuarioClienteController extends BaseControllerImpl<UsuarioCliente, UsuarioClienteFullDto, Long, UsuarioClienteFacadeImp> {
+@RequestMapping(path = "/usuarios")
+public class UsuarioController extends BaseControllerImpl<Usuario, UsuarioClienteFullDto, Long, UsuarioFacadeImp> {
 
-    public UsuarioClienteController(UsuarioClienteFacadeImp facade) {super (facade); }
+    public UsuarioController(UsuarioFacadeImp facade) {super (facade); }
 
     @GetMapping("role/{email}")
     @CrossOrigin("*")
-//    @PreAuthorize("isAuthenticated()")
-    public UsuarioCliente getUsuarioPorEmail(@PathVariable String email) {
+    @PreAuthorize("isAuthenticated()")
+    public Usuario getUsuarioPorEmail(@PathVariable String email) {
         return this.facade.obtenerUsuarioClientePorEmail(email);
     }
 
@@ -36,19 +36,19 @@ public class UsuarioClienteController extends BaseControllerImpl<UsuarioCliente,
     }
 
     @PostMapping()
-//    @PreAuthorize("hasAnyAuthority('ADMIN', 'SUPERADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'SUPERADMIN')")
     public ResponseEntity<UsuarioClienteFullDto> create(@RequestBody UsuarioClienteFullDto entity){
         return super.create(entity);
     }
 
     @PutMapping("/{id}")
-//    @PreAuthorize("hasAnyAuthority('ADMIN', 'SUPERADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'SUPERADMIN')")
     public ResponseEntity<UsuarioClienteFullDto> edit(@RequestBody UsuarioClienteFullDto entity, @PathVariable Long id){
         return super.edit(entity, id);
     }
 
     @DeleteMapping("/{id}")
-//    @PreAuthorize("hasAnyAuthority('ADMIN', 'SUPERADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'SUPERADMIN')")
     public ResponseEntity<?> deleteById(@PathVariable Long id){
         return super.deleteById(id);
     }

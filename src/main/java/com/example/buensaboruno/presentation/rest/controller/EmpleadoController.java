@@ -8,6 +8,7 @@ import com.example.buensaboruno.business.service.Imp.EmpleadoServiceImpl;
 import com.example.buensaboruno.presentation.rest.base.BaseControllerImpl;
 import org.springframework.http.ResponseEntity;
 //import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -30,19 +31,19 @@ public class EmpleadoController extends BaseControllerImpl<Empleado, EmpleadoFul
     }
 
     @PostMapping()
-//    @PreAuthorize("hasAnyAuthority('ADMIN', 'SUPERADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'SUPERADMIN')")
     public ResponseEntity<EmpleadoFullDto> create(@RequestBody EmpleadoFullDto entity){
         return super.create(entity);
     }
 
     @PutMapping("/{id}")
-//    @PreAuthorize("hasAnyAuthority('ADMIN', 'SUPERADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'SUPERADMIN')")
     public ResponseEntity<EmpleadoFullDto> edit(@RequestBody EmpleadoFullDto entity, @PathVariable Long id){
         return super.edit(entity, id);
     }
 
     @DeleteMapping("/{id}")
-//    @PreAuthorize("hasAnyAuthority('ADMIN', 'SUPERADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'SUPERADMIN')")
     public ResponseEntity<?> deleteById(@PathVariable Long id){
         return super.deleteById(id);
     }
