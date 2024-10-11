@@ -30,7 +30,7 @@ public class SucursalController extends BaseControllerImpl<Sucursal, SucursalFul
     @Autowired
     private Sucursalfacade sucursalfacade;
 
-    @GetMapping("/empresa/{idEmpresa}")
+    @GetMapping("/empresas/{idEmpresa}")
     public ResponseEntity<List<SucursalFullDto>> sucursalEmpresa(@PathVariable Long idEmpresa) {
         List<SucursalFullDto> sucursales = sucursalfacade.sucursalEmpresa(idEmpresa);
         if (sucursales != null && !sucursales.isEmpty()) {

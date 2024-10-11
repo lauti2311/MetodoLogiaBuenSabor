@@ -1,10 +1,7 @@
 package com.example.buensaboruno.domain.entities;
 
 import com.example.buensaboruno.domain.enums.Rol;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.envers.Audited;
 
@@ -20,6 +17,8 @@ public class Usuario extends Base{
     private String auth0Id;
     private String username;
     private String email;
+
+    @Enumerated(EnumType.ORDINAL)
     private Rol rol;
 
     @ManyToOne(cascade = CascadeType.ALL)

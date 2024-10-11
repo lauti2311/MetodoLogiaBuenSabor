@@ -13,7 +13,7 @@ import java.util.List;
 
 @RestController
 @CrossOrigin("*")
-@RequestMapping(path = "usuarioCliente")
+@RequestMapping(path = "/usuarios")
 public class UsuarioController extends BaseControllerImpl<Usuario, UsuarioClienteFullDto, Long, UsuarioFacadeImp> {
 
     public UsuarioController(UsuarioFacadeImp facade) {super (facade); }

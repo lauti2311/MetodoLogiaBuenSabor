@@ -20,6 +20,6 @@ public interface SucursalService extends BaseService<Sucursal, Long> {
 
     ResponseEntity<String> deleteImage(String publicId, Long id);
 
-    List<SucursalFullDto> sucursalEmpresa(Long empresaId);
+    List<SucursalFullDto> sucursalEmpresa(Long idEmpresa);
 
 }

@@ -20,6 +20,6 @@ public interface Sucursalfacade extends BaseFacade<SucursalFullDto, Long> {
     // Método para eliminar una imagen por su identificador público y UUID
     ResponseEntity<String> deleteImage(String publicId, Long id);
 
-    List<SucursalFullDto> sucursalEmpresa(Long empresaId);
+    List<SucursalFullDto> sucursalEmpresa(Long idEmpresa);
 
 }

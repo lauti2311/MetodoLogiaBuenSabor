@@ -88,6 +88,9 @@ public class BuensaborunoApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(BuensaborunoApplication.class, args);
 		logger.info("Estoy activo");
+		for (Rol rol : Rol.values()) {
+			System.out.println(rol + " = " + rol.ordinal());
+		}
 	}
 
 	@Bean
