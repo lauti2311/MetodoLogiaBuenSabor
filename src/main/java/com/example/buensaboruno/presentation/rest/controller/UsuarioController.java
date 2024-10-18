@@ -20,7 +20,7 @@ public class UsuarioController extends BaseControllerImpl<Usuario, UsuarioClient
 
     @GetMapping("role/{email}")
     @CrossOrigin("*")
-    @PreAuthorize("isAuthenticated()")
+   // @PreAuthorize("isAuthenticated()")
     public Usuario getUsuarioPorEmail(@PathVariable String email) {
         return this.facade.obtenerUsuarioClientePorEmail(email);
     }
@@ -36,19 +36,19 @@ public class UsuarioController extends BaseControllerImpl<Usuario, UsuarioClient
     }
 
     @PostMapping()
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'SUPERADMIN')")
+    //@PreAuthorize("hasAnyAuthority('ADMIN', 'SUPERADMIN')")
     public ResponseEntity<UsuarioClienteFullDto> create(@RequestBody UsuarioClienteFullDto entity){
         return super.create(entity);
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'SUPERADMIN')")
+    //@PreAuthorize("hasAnyAuthority('ADMIN', 'SUPERADMIN')")
     public ResponseEntity<UsuarioClienteFullDto> edit(@RequestBody UsuarioClienteFullDto entity, @PathVariable Long id){
         return super.edit(entity, id);
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'SUPERADMIN')")
+    //@PreAuthorize("hasAnyAuthority('ADMIN', 'SUPERADMIN')")
     public ResponseEntity<?> deleteById(@PathVariable Long id){
         return super.deleteById(id);
     }

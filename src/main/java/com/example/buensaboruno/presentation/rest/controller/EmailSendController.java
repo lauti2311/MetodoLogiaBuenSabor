@@ -5,7 +5,7 @@ import com.example.buensaboruno.business.service.EmailService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 //import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.access.prepost.PreAuthorize;
+//import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -26,7 +26,7 @@ public class EmailSendController {
     }
 
     @PostMapping("/enviarFactura/{pedidoId}")
-    @PreAuthorize("hasAnyAuthority('CAJERO', 'ADMIN', 'SUPERADMIN')")
+    //@PreAuthorize("hasAnyAuthority('CAJERO', 'ADMIN', 'SUPERADMIN')")
     public ResponseEntity<String> enviarFacturaPorCorreo(@PathVariable Long pedidoId, @RequestParam String to) {
         try {
             // Generar el PDF de la factura

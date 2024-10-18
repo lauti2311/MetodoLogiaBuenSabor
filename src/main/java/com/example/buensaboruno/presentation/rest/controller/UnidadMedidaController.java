@@ -6,7 +6,7 @@ import com.example.buensaboruno.domain.entities.UnidadMedida;
 import com.example.buensaboruno.presentation.rest.base.BaseControllerImpl;
 import org.springframework.http.ResponseEntity;
 //import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.access.prepost.PreAuthorize;
+//iimport org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -31,19 +31,19 @@ public class UnidadMedidaController extends BaseControllerImpl<UnidadMedida, Uni
     }
 
     @PostMapping()
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'SUPERADMIN')")
+    //@PreAuthorize("hasAnyAuthority('ADMIN', 'SUPERADMIN')")
     public ResponseEntity<UnidadMedidaFullDto> create(@RequestBody UnidadMedidaFullDto entity) {
         return super.create(entity);
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'SUPERADMIN')")
+    //@PreAuthorize("hasAnyAuthority('ADMIN', 'SUPERADMIN')")
     public ResponseEntity<UnidadMedidaFullDto> edit(@RequestBody UnidadMedidaFullDto entity, @PathVariable Long id) {
         return super.edit(entity, id);
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'SUPERADMIN')")
+    //@PreAuthorize("hasAnyAuthority('ADMIN', 'SUPERADMIN')")
     public ResponseEntity<?> deleteById(@PathVariable Long id) {
         return super.deleteById(id);
     }

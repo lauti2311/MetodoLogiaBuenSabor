@@ -28,19 +28,19 @@ public class UsuarioEmpleadoController extends BaseControllerImpl<UsuarioEmplead
     }
 
     @PostMapping()
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'SUPERADMIN')")
+    //@PreAuthorize("hasAnyAuthority('ADMIN', 'SUPERADMIN')")
     public ResponseEntity<UsuarioEmpleadoFullDto> create(@RequestBody UsuarioEmpleadoFullDto entity){
         return super.create(entity);
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'SUPERADMIN')")
+    //@PreAuthorize("hasAnyAuthority('ADMIN', 'SUPERADMIN')")
     public ResponseEntity<UsuarioEmpleadoFullDto> edit(@RequestBody UsuarioEmpleadoFullDto entity, @PathVariable Long id){
         return super.edit(entity, id);
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'SUPERADMIN')")
+   // @PreAuthorize("hasAnyAuthority('ADMIN', 'SUPERADMIN')")
     public ResponseEntity<?> deleteById(@PathVariable Long id){
         return super.deleteById(id);
     }
