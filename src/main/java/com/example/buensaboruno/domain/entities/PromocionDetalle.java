@@ -22,6 +22,7 @@ public class PromocionDetalle extends Base{
     private Articulo articulo;
 
 
+
 //    @ManyToOne(fetch = FetchType.LAZY)
 //    @JoinColumn(name = "promocion_id")
 //    private Promocion promocion;
