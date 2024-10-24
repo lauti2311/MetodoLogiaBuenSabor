@@ -9,7 +9,6 @@ import com.example.buensaboruno.business.service.Imp.EmpresaServiceImpl;
 import com.example.buensaboruno.presentation.rest.base.BaseControllerImpl;
 import org.springframework.http.ResponseEntity;
 //import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 

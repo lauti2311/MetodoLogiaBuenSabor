@@ -13,7 +13,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @CrossOrigin("*")
@@ -39,11 +43,27 @@ public class PromocionController extends BaseControllerImpl<Promocion, Promocion
         return super.getById(id);
     }
 
+
     @GetMapping
     public ResponseEntity<List<PromocionFullDto>> getAll() {
-        return super.getAll();
-    }
+        List<PromocionFullDto> promociones = super.getAll().getBody();
 
+        if (promociones != null) {
+            LocalDate today = LocalDate.now();
+            List<PromocionFullDto> promocionesDelDia = promociones.stream()
+                    .filter(p -> {
+                        LocalDate fechaDesde = LocalDate.parse(p.getFechaDesde(), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+                        LocalDate fechaHasta = LocalDate.parse(p.getFechaHasta(), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+                        LocalTime horaHasta = LocalTime.parse(p.getHoraHasta());
+                        return !fechaDesde.isAfter(today) && !fechaHasta.isBefore(today) && fechaDesde.isEqual(today) && !horaHasta.isBefore(LocalTime.now());
+                    })
+                    .collect(Collectors.toList());
+
+            return ResponseEntity.ok(promocionesDelDia);
+        } else {
+            return ResponseEntity.noContent().build();
+        }
+    }
     @PostMapping()
     //@PreAuthorize("hasAnyAuthority('ADMIN', 'SUPERADMIN')")
     public ResponseEntity<PromocionFullDto> create(@RequestBody PromocionFullDto entity){
