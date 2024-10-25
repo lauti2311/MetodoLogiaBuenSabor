@@ -50,12 +50,25 @@ public class PromocionController extends BaseControllerImpl<Promocion, Promocion
 
         if (promociones != null) {
             LocalDate today = LocalDate.now();
+            LocalTime now = LocalTime.now();
+
+            // Filtrar promociones que estén activas hoy
             List<PromocionFullDto> promocionesDelDia = promociones.stream()
                     .filter(p -> {
                         LocalDate fechaDesde = LocalDate.parse(p.getFechaDesde(), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
                         LocalDate fechaHasta = LocalDate.parse(p.getFechaHasta(), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+                        LocalTime horaDesde = LocalTime.parse(p.getHoraDesde());
                         LocalTime horaHasta = LocalTime.parse(p.getHoraHasta());
-                        return !fechaDesde.isAfter(today) && !fechaHasta.isBefore(today) && fechaDesde.isEqual(today) && !horaHasta.isBefore(LocalTime.now());
+
+                        // Condición 1: El día de hoy debe estar dentro del rango de fechas
+                        boolean fechaValida = !fechaDesde.isAfter(today) && !fechaHasta.isBefore(today);
+
+                        // Condición 2: Si hoy es la fecha desde, entonces verifica que la hora actual esté después de la hora de inicio
+                        boolean horaValidaHoy = (fechaDesde.isEqual(today) && now.isAfter(horaDesde))
+                                || (fechaHasta.isEqual(today) && now.isBefore(horaHasta))
+                                || (!fechaDesde.isEqual(today) && !fechaHasta.isEqual(today));
+
+                        return fechaValida && horaValidaHoy;
                     })
                     .collect(Collectors.toList());
 
@@ -64,6 +77,7 @@ public class PromocionController extends BaseControllerImpl<Promocion, Promocion
             return ResponseEntity.noContent().build();
         }
     }
+
     @PostMapping()
     //@PreAuthorize("hasAnyAuthority('ADMIN', 'SUPERADMIN')")
     public ResponseEntity<PromocionFullDto> create(@RequestBody PromocionFullDto entity){
