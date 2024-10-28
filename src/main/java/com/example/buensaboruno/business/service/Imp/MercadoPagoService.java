@@ -25,7 +25,7 @@ public class MercadoPagoService {
     }
     public PreferenceMP createPreference(PedidoFullDto pedido) {
         try {
-            MercadoPagoConfig.setAccessToken("TEST-7097660566755669-061008-aa21a0337a6e30af61d189470eb92b4c-747783279");
+            MercadoPagoConfig.setAccessToken("TEST-4139319870491048-052920-ce45fb002186aeed8ea1f16e3d269a36-729867323");
 
             PreferenceItemRequest itemRequest = PreferenceItemRequest.builder()
                     .id(String.valueOf(pedido.getId()))
@@ -42,9 +42,9 @@ public class MercadoPagoService {
 //            String successUrl = "http://localhost:5174/carrito/1?i=" + pedido.getId();
 
             PreferenceBackUrlsRequest backURL = PreferenceBackUrlsRequest.builder()
-                    .success("https://www.youtube.com/")
-                    .pending("https://www.youtube.com/")
-                    .failure("https://www.youtube.com/")
+                    .success("http://localhost:5173/mpsuccess")
+                    .pending("http://localhost:5173/mppending")
+                    .failure("http://localhost:5173/mpfailure")
                     .build();
 
             PreferenceRequest preferenceRequest = PreferenceRequest.builder()
