@@ -18,12 +18,12 @@ public class Usuario extends Base{
     private String username;
     private String email;
 
-    @Enumerated(EnumType.ORDINAL)
-    private Rol rol;
+//    @Enumerated(EnumType.ORDINAL)
+//    private Rol rol;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @ToString.Exclude
-    @JoinColumn(name = "empleado_id")
-    private Empleado empleado;
+//    @ManyToOne(cascade = CascadeType.ALL)
+//    @ToString.Exclude
+//    @JoinColumn(name = "empleado_id")
+//    private Empleado empleado;
 
 }

@@ -2,6 +2,7 @@ package com.example.buensaboruno.business.facade;
 
 
 import com.example.buensaboruno.business.facade.Base.BaseFacade;
+import com.example.buensaboruno.domain.dto.pedido.PedidoCreateDto;
 import com.example.buensaboruno.domain.dto.pedido.PedidoFullDto;
 import com.example.buensaboruno.domain.entities.Pedido;
 import com.example.buensaboruno.domain.enums.Estado;
@@ -31,4 +32,8 @@ public interface PedidoFacade extends BaseFacade<PedidoFullDto, Long> {
     List<PedidoFullDto> pedidosSucursal(Long idSucursal);
 
     ByteArrayOutputStream generatePedidoPDF(Long pedidoId);
+
+    PedidoFullDto createPedido(PedidoCreateDto pedidoDto);
+
+
 }

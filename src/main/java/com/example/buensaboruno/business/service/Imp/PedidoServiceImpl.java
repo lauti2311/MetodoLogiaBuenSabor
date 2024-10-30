@@ -272,6 +272,9 @@ public class PedidoServiceImpl extends BaseServiceImpl<Pedido, Long> implements 
 
     @Override
     public List<Pedido> getPedidosFiltrados(String rol) {
+        if (rol == null || rol.isEmpty()) {
+            return pedidoRepository.findAll(); // If no role is provided, return all pedidos
+        }
         switch (rol) {
             case "CAJERO":
                 return pedidoRepository.findByEstadoIn(Arrays.asList(

@@ -2,6 +2,7 @@ package com.example.buensaboruno.presentation.rest.controller;
 
 import com.example.buensaboruno.business.facade.imp.PedidoFacadeImp;
 import com.example.buensaboruno.business.facade.PedidoFacade;
+import com.example.buensaboruno.domain.dto.pedido.PedidoCreateDto;
 import com.example.buensaboruno.domain.dto.pedido.PedidoFullDto;
 import com.example.buensaboruno.domain.entities.Pedido;
 import com.example.buensaboruno.domain.enums.Estado;
@@ -227,5 +228,11 @@ public class PedidoController extends BaseControllerImpl<Pedido, PedidoFullDto, 
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    @PostMapping("/crear/{sucursalId}")
+    public ResponseEntity<PedidoFullDto> createPedido(@RequestBody PedidoCreateDto pedidoDto) {
+        PedidoFullDto nuevoPedido = pedidoFacade.createPedido(pedidoDto);
+        return new ResponseEntity<>(nuevoPedido, HttpStatus.CREATED);
     }
 }
