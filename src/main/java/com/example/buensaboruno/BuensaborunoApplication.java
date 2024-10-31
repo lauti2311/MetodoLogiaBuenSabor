@@ -91,6 +91,9 @@ public class BuensaborunoApplication {
 		for (Rol rol : Rol.values()) {
 			System.out.println(rol + " = " + rol.ordinal());
 		}
+		for (TipoEnvio tipoEnvio : TipoEnvio.values()) {
+			System.out.println(tipoEnvio + " = " + tipoEnvio.ordinal());
+		}
 	}
 
 	@Bean
