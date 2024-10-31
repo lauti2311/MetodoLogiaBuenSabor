@@ -6,6 +6,6 @@ public enum Rol {
     EMPLEADO,
     COCINERO,
     CAJERO,
-    DELIVERY
+    //DELIVERY
 
 }
