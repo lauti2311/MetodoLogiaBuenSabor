@@ -104,4 +104,14 @@ public class ArticuloManufacturadoController extends BaseControllerImpl<Articulo
             return ResponseEntity.status(500).body("Error retrieving images");
         }
     }
+
+    @GetMapping("/{id}/sugeridos")
+    public ResponseEntity<List<ArticuloManufacturadoFullDto>> getSuggestedProducts(@PathVariable Long id) {
+        List<ArticuloManufacturadoFullDto> suggestedProducts = articuloManufacturadoFacade.getSuggestedProducts(id);
+        if (!suggestedProducts.isEmpty()) {
+            return ResponseEntity.ok(suggestedProducts);
+        } else {
+            return ResponseEntity.noContent().build();
+        }
+    }
 }

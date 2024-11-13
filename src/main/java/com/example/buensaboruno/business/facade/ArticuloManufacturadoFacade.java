@@ -15,4 +15,6 @@ public interface ArticuloManufacturadoFacade extends BaseFacade<ArticuloManufact
     // Método para eliminar una imagen por su identificador público y UUID
     ResponseEntity<String> deleteImage(String publicId, Long id);
     List<ArticuloManufacturadoFullDto> manufacturados(Long idSucursal);
+
+    List<ArticuloManufacturadoFullDto> getSuggestedProducts(Long id);
 }
