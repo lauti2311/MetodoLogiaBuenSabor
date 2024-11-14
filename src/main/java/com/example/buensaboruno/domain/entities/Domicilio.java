@@ -1,6 +1,7 @@
 package com.example.buensaboruno.domain.entities;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
@@ -30,5 +31,9 @@ public class Domicilio extends Base{
     @NotAudited
     private Localidad localidad;
 
+    @ManyToMany (mappedBy = "domicilios")
+    @Builder.Default
+    @JsonIgnore
+    private Set<Cliente> clientes = new HashSet<>();
 
 }

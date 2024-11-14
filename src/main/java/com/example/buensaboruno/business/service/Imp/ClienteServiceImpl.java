@@ -15,9 +15,6 @@ public class ClienteServiceImpl extends BaseServiceImpl<Cliente, Long> implement
     @Autowired
     private ClienteRepository clienteRepository;
 
-    @Override
-    public Cliente findByEmail(String email) {
-        return this.clienteRepository.findByEmail(email);
-    }
+
 
 }

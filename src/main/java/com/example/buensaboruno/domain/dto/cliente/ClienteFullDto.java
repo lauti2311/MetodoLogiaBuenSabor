@@ -15,5 +15,6 @@ public class ClienteFullDto extends BaseDto {
     private String apellido;
     private String telefono;
     private String email;
+    private String clave;
 
 }

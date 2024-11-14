@@ -21,39 +21,14 @@
     @Builder
     @Audited
     public class Empleado extends Base{
-//
-//        private String nombre;
-//        private String apellido;
-//        private String telefono;
-//        private String email;
-//        private LocalDate fechaNacimiento;
-//        private Rol rol;
-//
-//
-////        @OneToOne
-////        protected UsuarioEmpleado usuarioEmpleado;
-//
-//        @OneToMany(mappedBy = "empleado", cascade = CascadeType.REFRESH, orphanRemoval = true)
-//        @ToString.Exclude
-//        @Builder.Default
-//        private Set<Pedido> pedidos= new HashSet<>();
-//
-//        @ManyToOne
-//        @ToString.Exclude
-//        @JoinColumn(name = "sucursal_id")
-//        private Sucursal sucursal;
-//
-//        @OneToOne(cascade = CascadeType.ALL)
-//        @JoinColumn(name = "imagen_empleado_id")
-//        @NotAudited
-//        private ImagenEmpleado imagenEmpleado;
 
+        private String nombre;
+        private String apellido;
+        private String telefono;
+        private String email;
+        private String clave;
+        private LocalDate fechaNacimiento;
         private Rol tipoEmpleado;
-
-//    @OneToMany(mappedBy = "empleado", cascade = CascadeType.REFRESH, orphanRemoval = true)
-//    @ToString.Exclude
-//    @Builder.Default
-//    private Set<Pedido> pedidos= new HashSet<>();
 
         @ManyToOne
         @ToString.Exclude
