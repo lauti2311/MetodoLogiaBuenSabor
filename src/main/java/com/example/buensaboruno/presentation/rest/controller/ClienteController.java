@@ -20,10 +20,10 @@ public class ClienteController extends BaseControllerImpl<Cliente, ClienteFullDt
 
     public ClienteController(ClienteFacadeImp facade) {super (facade); }
 
-    @GetMapping("email/{email}")
-    public Cliente getClientByEmail(@PathVariable String email) {
-        return this.facade.findByEmail(email);
-    }
+//    @GetMapping("email/{email}")
+//    public Cliente getClientByEmail(@PathVariable String email) {
+//        return this.facade.findByEmail(email);
+//    }
 
     @GetMapping("/{id}")
     public ResponseEntity<ClienteFullDto> getById(@PathVariable Long id){
