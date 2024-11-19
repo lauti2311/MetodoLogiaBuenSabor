@@ -5,6 +5,7 @@ import jakarta.mail.internet.MimeMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ByteArrayResource;
+import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
@@ -47,5 +48,16 @@ public class EmailServiceImpl implements EmailService {
         }
 
 
+    }
+
+
+
+    public void enviarCorreoPrueba() {
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo("Poner cualquier mail de prueba");
+        message.setSubject("Prueba de Envío");
+        message.setText("Este es un correo de prueba desde Spring Boot");
+
+        javaMailSender.send(message);
     }
 }

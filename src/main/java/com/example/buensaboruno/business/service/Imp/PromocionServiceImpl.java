@@ -8,6 +8,7 @@ import com.example.buensaboruno.business.service.PromocionService;
 import com.example.buensaboruno.domain.dto.promocion.PromocionFullDto;
 import com.example.buensaboruno.domain.entities.*;
 import com.example.buensaboruno.repositories.*;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -66,7 +67,7 @@ public class PromocionServiceImpl extends BaseServiceImpl<Promocion, Long> imple
             promocionPersistida.setSucursales(sucursalesPersistidas); // Establecer las sucursales asociadas a la promoción
             promocionRepository.save(promocionPersistida); // Guardar la promoción actualizada con las sucursales asociadas
         }
-        Set<PromocionDetalle> detalles = request.getPromocionDetalles();
+        Set<PromocionDetalle> detalles = request.getPromocionDetalle();
         Set<PromocionDetalle> detallesPersistidos = new HashSet<>();
 
         if (detalles != null && !detalles.isEmpty()) {
@@ -81,12 +82,13 @@ public class PromocionServiceImpl extends BaseServiceImpl<Promocion, Long> imple
                 PromocionDetalle savedDetalle = promocionDetalleRepository.save(detalle);
                 detallesPersistidos.add(savedDetalle);
             }
-            request.setPromocionDetalles(detallesPersistidos);
+            request.setPromocionDetalle(detallesPersistidos);
         } else {
-            throw new IllegalArgumentException("El pedido debe contener un detalle o más.");
+            throw new IllegalArgumentException("La promocion debe contener un detalle o más.");
         }
         return promocionPersistida;
     }
+
     @Override
     public Promocion update(Promocion request, Long id) {
         Promocion promocion = promocionRepository.findById(id)

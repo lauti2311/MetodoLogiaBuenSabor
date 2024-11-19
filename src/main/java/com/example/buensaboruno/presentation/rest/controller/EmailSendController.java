@@ -2,8 +2,11 @@ package com.example.buensaboruno.presentation.rest.controller;
 
 import com.example.buensaboruno.business.facade.PedidoFacade;
 import com.example.buensaboruno.business.service.EmailService;
+import com.example.buensaboruno.business.service.Imp.EmailServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+//import org.springframework.security.access.prepost.PreAuthorize;
 //import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -19,13 +22,17 @@ public class EmailSendController {
     private EmailService emailService;
     private PedidoFacade pedidoFacade;
 
+    @Autowired
+    private EmailServiceImpl emailServicePrueba;
+
+
     public EmailSendController(EmailService emailService, PedidoFacade pedidoFacade) {
         this.emailService = emailService;
         this.pedidoFacade = pedidoFacade;
     }
 
     @PostMapping("/enviarFactura/{pedidoId}")
-//    @PreAuthorize("hasAnyAuthority('CAJERO', 'ADMIN', 'SUPERADMIN')")
+    //@PreAuthorize("hasAnyAuthority('CAJERO', 'ADMIN', 'SUPERADMIN')")
     public ResponseEntity<String> enviarFacturaPorCorreo(@PathVariable Long pedidoId, @RequestParam String to) {
         try {
             // Generar el PDF de la factura
@@ -44,6 +51,12 @@ public class EmailSendController {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al enviar la factura por correo");
         }
+    }
+
+    @GetMapping("/sendTestEmail")
+    public String sendTestEmail() {
+        emailServicePrueba.enviarCorreoPrueba();
+        return "Correo de prueba enviado";
     }
 
     @PostMapping("/send")
@@ -101,5 +114,6 @@ public class EmailSendController {
         public void transferTo(java.io.File destination) throws IOException, IllegalStateException {
             throw new UnsupportedOperationException("This method is not supported.");
         }
+
     }
 }

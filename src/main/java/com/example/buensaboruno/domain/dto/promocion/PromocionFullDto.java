@@ -21,16 +21,33 @@ import java.util.Set;
 @Setter
 public class PromocionFullDto extends BaseDto {
     private String denominacion;
-    private LocalDate fechaDesde;
-    private LocalDate fechaHasta;
+    private String fechaDesde; // Changed to String
+    private String fechaHasta; // Changed to String
     @Schema(type = "string", format = "time", pattern = "HH:mm:ss", description = "Horario en formato HH:mm:ss")
-    private LocalTime horaDesde;
+    private String horaDesde; // Changed to String
     @Schema(type = "string", format = "time", pattern = "HH:mm:ss", description = "Horario en formato HH:mm:ss")
-    private LocalTime horaHasta;
+    private String horaHasta; // Changed to String
     private String descripcionDescuento;
     private Double precioPromocional;
     private TipoPromocion tipoPromocion;
     private Set<ImagenDto> imagenes;
     private Set<SucursalFullDto> sucursales;
     private Set<PromocionDetalleFullDto> promocionDetalle;
+
+    // Add methods to set LocalDate and LocalTime as String
+    public void setFechaDesde(LocalDate fechaDesde) {
+        this.fechaDesde = fechaDesde.toString();
+    }
+
+    public void setFechaHasta(LocalDate fechaHasta) {
+        this.fechaHasta = fechaHasta.toString();
+    }
+
+    public void setHoraDesde(LocalTime horaDesde) {
+        this.horaDesde = horaDesde.toString();
+    }
+
+    public void setHoraHasta(LocalTime horaHasta) {
+        this.horaHasta = horaHasta.toString();
+    }
 }

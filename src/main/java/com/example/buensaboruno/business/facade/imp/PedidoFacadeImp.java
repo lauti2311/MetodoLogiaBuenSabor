@@ -4,12 +4,15 @@ package com.example.buensaboruno.business.facade.imp;
 import com.example.buensaboruno.business.facade.Base.BaseFacadeImp;
 import com.example.buensaboruno.business.facade.PedidoFacade;
 import com.example.buensaboruno.business.mapper.BaseMapper;
+import com.example.buensaboruno.business.mapper.PedidoMapper;
 import com.example.buensaboruno.business.service.Base.BaseService;
 import com.example.buensaboruno.business.service.PedidoService;
+import com.example.buensaboruno.domain.dto.pedido.PedidoCreateDto;
 import com.example.buensaboruno.domain.dto.pedido.PedidoFullDto;
 import com.example.buensaboruno.domain.entities.Articulo;
 import com.example.buensaboruno.domain.entities.Pedido;
 import com.example.buensaboruno.domain.enums.Estado;
+import com.example.buensaboruno.repositories.PedidoRepository;
 import com.lowagie.text.*;
 import com.lowagie.text.pdf.PdfPCell;
 import com.lowagie.text.pdf.PdfPTable;
@@ -35,6 +38,13 @@ public class PedidoFacadeImp extends BaseFacadeImp<Pedido, PedidoFullDto, Long> 
     @Autowired
 
     private PedidoService pedidoService;
+
+
+    @Autowired
+    private PedidoRepository pedidoRepository;
+
+    @Autowired
+    private PedidoMapper pedidoMapper;
     public List<PedidoFullDto> findByClienteId(Long idCliente) {
         return this.pedidoService.findByClienteId(idCliente);
     }
@@ -378,5 +388,20 @@ public class PedidoFacadeImp extends BaseFacadeImp<Pedido, PedidoFullDto, Long> 
         }
 
         return baos;
+    }
+
+    @Override
+    public PedidoFullDto createPedido(PedidoCreateDto pedidoDto) {
+        Pedido pedido = new Pedido();
+        pedido.setHoraEstimadaFinalizacion(pedidoDto.getHoraEstimadaFinalizacion());
+        pedido.setTotal(pedidoDto.getTotal());
+        pedido.setTotalCosto(pedidoDto.getTotalCosto());
+        pedido.setEstado(Estado.PENDIENTE);
+        pedido.setTipoEnvio(pedidoDto.getTipoEnvio());
+        pedido.setFormaPago(pedidoDto.getFormaPago());
+        pedido.setFechaPedido(pedidoDto.getFechaPedido());
+
+        Pedido savedPedido = pedidoRepository.save(pedido);
+        return pedidoMapper.toDTO(savedPedido);
     }
 }

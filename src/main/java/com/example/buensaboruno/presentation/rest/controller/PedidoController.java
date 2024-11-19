@@ -2,6 +2,7 @@ package com.example.buensaboruno.presentation.rest.controller;
 
 import com.example.buensaboruno.business.facade.imp.PedidoFacadeImp;
 import com.example.buensaboruno.business.facade.PedidoFacade;
+import com.example.buensaboruno.domain.dto.pedido.PedidoCreateDto;
 import com.example.buensaboruno.domain.dto.pedido.PedidoFullDto;
 import com.example.buensaboruno.domain.entities.Pedido;
 import com.example.buensaboruno.domain.enums.Estado;
@@ -12,6 +13,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+//import org.springframework.security.access.prepost.PreAuthorize;
 //import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -60,19 +62,18 @@ public class PedidoController extends BaseControllerImpl<Pedido, PedidoFullDto, 
     }
 
     @PostMapping()
-//    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<PedidoFullDto> create(@RequestBody PedidoFullDto entity){
         return super.create(entity);
     }
 
     @PutMapping("/{id}")
-//    @PreAuthorize("hasAnyAuthority('ADMIN', 'SUPERADMIN')")
+   // @PreAuthorize("hasAnyAuthority('ADMIN', 'SUPERADMIN')")
     public ResponseEntity<PedidoFullDto> edit(@RequestBody PedidoFullDto entity, @PathVariable Long id){
         return super.edit(entity, id);
     }
 
     @DeleteMapping("/{id}")
-//    @PreAuthorize("hasAuthority('ADMIN')")
+   // @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<?> deleteById(@PathVariable Long id){
         return super.deleteById(id);
     }
@@ -226,5 +227,11 @@ public class PedidoController extends BaseControllerImpl<Pedido, PedidoFullDto, 
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    @PostMapping("/crear/{sucursalId}")
+    public ResponseEntity<PedidoFullDto> createPedido(@RequestBody PedidoCreateDto pedidoDto) {
+        PedidoFullDto nuevoPedido = pedidoFacade.createPedido(pedidoDto);
+        return new ResponseEntity<>(nuevoPedido, HttpStatus.CREATED);
     }
 }

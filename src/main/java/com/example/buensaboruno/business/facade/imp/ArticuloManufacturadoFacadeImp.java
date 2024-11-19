@@ -28,6 +28,12 @@ public class ArticuloManufacturadoFacadeImp extends BaseFacadeImp<ArticuloManufa
     public List<ArticuloManufacturadoFullDto> manufacturados(Long idSucursal) {
         return this.articuloManufacturadoService.manufacturados(idSucursal);
     }
+
+    @Override
+    public List<ArticuloManufacturadoFullDto> getSuggestedProducts(Long id) {
+        return null;
+    }
+
     @Override
     public ResponseEntity<List<Map<String, Object>>> getAllImagesByArticuloManufacturadoId(Long id) {
         return articuloManufacturadoService.getAllImagesByArticuloManufacturadoId(id);

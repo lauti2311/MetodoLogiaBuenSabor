@@ -87,7 +87,13 @@ public class BuensaborunoApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(BuensaborunoApplication.class, args);
-		logger.info("Estoy activo en el main Alberto");
+		logger.info("Estoy activo");
+		for (Rol rol : Rol.values()) {
+			System.out.println(rol + " = " + rol.ordinal());
+		}
+		for (TipoEnvio tipoEnvio : TipoEnvio.values()) {
+			System.out.println(tipoEnvio + " = " + tipoEnvio.ordinal());
+		}
 	}
 
 	@Bean
@@ -194,7 +200,7 @@ CommandLineRunner init(ClienteRepository clienteRepository,
 //			Categoria categoriaPizzas = Categoria.builder().denominacion("Pizzas").
 //					build();
 //
-			Empresa empresaCarlos = Empresa.builder().nombre("Empresa uno").cuil(1234567L).eliminado(false).razonSocial("Venta de Alimentos").build();
+			/*Empresa empresaCarlos = Empresa.builder().nombre("Empresa uno").cuil(1234567L).eliminado(false).razonSocial("Venta de Alimentos").build();
 			empresaRepository.save(empresaCarlos);
 			ImagenEmpresa imagen = ImagenEmpresa.builder().eliminado(false).url("https://res.cloudinary.com/dgfbciltc/image/upload/neynstxyjh7ndh5emik5")
 					.name("Logo.png")
@@ -214,12 +220,12 @@ CommandLineRunner init(ClienteRepository clienteRepository,
 					.horarioCierre(LocalTime.of(20, 0))   // Ejemplo de hora de cierre
 					.esCasaMatriz(true)
 					.build();
-
+*/
 // Asociar la empresa a la sucursal
-			sucursalPrincipal.setEmpresa(empresaCarlos);  // Asociamos la sucursal a la empresa creada anteriormente
-
-// Guardar la sucursal en la base de datos
-			sucursalRepository.save(sucursalPrincipal);
+//			sucursalPrincipal.setEmpresa(empresaCarlos);  // Asociamos la sucursal a la empresa creada anteriormente
+//
+//// Guardar la sucursal en la base de datos
+//			sucursalRepository.save(sucursalPrincipal);
 
 
 
@@ -586,14 +592,14 @@ CommandLineRunner init(ClienteRepository clienteRepository,
 //					.cuil(999999999L)
 //					.razonSocial("Razon social")
 //					.build();
-//			empresaRepository.save(empresa);
-//
-			Categoria categoria = Categoria.builder()
-					.denominacion("Categoria de prueba")
-					.build();
-			categoriaRepository.save(categoria);
-//			/*
-//			//PRUEBA LAZY -> FALLA
+////			empresaRepository.save(empresa);
+////
+//			Categoria categoria = Categoria.builder()
+//					.denominacion("Categoria de prueba")
+//					.build();
+//			categoriaRepository.save(categoria);
+////			/*
+////			//PRUEBA LAZY -> FALLA
 //			var empresaRepo = empresaRepository.findById(2L);
 //			if(empresaRepo.isPresent()){
 //				Optional<Sucursal> sucursalRepo = sucursalRepository.findById(3L);
