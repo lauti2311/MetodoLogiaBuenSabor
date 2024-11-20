@@ -20,8 +20,5 @@ public class ClienteFacadeImp extends BaseFacadeImp<Cliente, ClienteFullDto, Lon
         super(baseService, baseMapper);
     }
 
-    public Cliente findByEmail(String email) {
-        return this.clienteService.findByEmail(email);
-    }
 
 }
