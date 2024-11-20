@@ -33,8 +33,6 @@
         @ManyToOne
         @ToString.Exclude
         @JoinColumn(name = "sucursal_id")
-        @JsonManagedReference
         private Sucursal sucursal;
-
 
     }
