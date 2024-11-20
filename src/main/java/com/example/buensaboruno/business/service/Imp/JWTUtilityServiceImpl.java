@@ -28,10 +28,10 @@ import java.util.Date;
 @Service
 public class JWTUtilityServiceImpl implements JWTUtilityService {
 
-    @Value("classpath:jwt/private_key.pem")
+    @Value("classpath:jwt/private.key.pem")
     private Resource privateKeyResource;
 
-    @Value("classpath:jwt/public_key.pem")
+    @Value("classpath:jwt/public.key.pem")
     private Resource publicKeyResource;
 
     @Override
