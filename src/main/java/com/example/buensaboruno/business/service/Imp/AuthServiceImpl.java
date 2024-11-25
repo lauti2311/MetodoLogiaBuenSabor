@@ -48,7 +48,6 @@ public class AuthServiceImpl implements IAuthService {
                 Empleado empleado = optionalEmpleado.get();
                 if (verifyPassword(login.getClave(), empleado.getClave())) {
                     jwt.put("jwt", jwtUtilityService.generateJWT(empleado.getId(), empleado.getTipoEmpleado().name()));
-                    jwt.put("role", empleado.getTipoEmpleado().name()); // Asegúrate de incluir el rol en la respuesta
                 } else {
                     jwt.put("error", "Credenciales incorrectas");
                 }
