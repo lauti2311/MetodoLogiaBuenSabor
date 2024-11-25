@@ -36,13 +36,13 @@ public class ClienteController extends BaseControllerImpl<Cliente, ClienteFullDt
     }
 
     @PostMapping()
-   //@PreAuthorize("hasAnyAuthority('ADMIN', 'SUPERADMIN')")
+    //@PreAuthorize("hasAnyAuthority('ADMIN', 'SUPERADMIN')")
     public ResponseEntity<ClienteFullDto> create(@RequestBody ClienteFullDto entity){
         return super.create(entity);
     }
 
     @PutMapping("/{id}")
-   //@PreAuthorize("hasAnyAuthority('ADMIN', 'SUPERADMIN')")
+    //@PreAuthorize("hasAnyAuthority('ADMIN', 'SUPERADMIN')")
     public ResponseEntity<ClienteFullDto> edit(@RequestBody ClienteFullDto entity, @PathVariable Long id){
         return super.edit(entity, id);
     }
