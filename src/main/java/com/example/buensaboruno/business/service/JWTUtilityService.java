@@ -10,7 +10,7 @@ import java.security.spec.InvalidKeySpecException;
 import java.text.ParseException;
 
 public interface JWTUtilityService {
-    public String generateJWT(Long empleadoId) throws IOException, NoSuchAlgorithmException, InvalidKeySpecException, JOSEException;
+    String generateJWT(Long empleadoId, String tipoEmpleado) throws IOException, NoSuchAlgorithmException, InvalidKeySpecException, JOSEException;
     public JWTClaimsSet parseJWT(String jwt) throws IOException, NoSuchAlgorithmException, InvalidKeySpecException, ParseException, JOSEException;
 
 }

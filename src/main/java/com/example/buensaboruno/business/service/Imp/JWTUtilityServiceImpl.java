@@ -28,14 +28,15 @@ import java.util.Date;
 @Service
 public class JWTUtilityServiceImpl implements JWTUtilityService {
 
-    @Value("classpath:jwt/private_key.pem")
+    @Value("classpath:jwt/private.key.pem")
     private Resource privateKeyResource;
 
-    @Value("classpath:jwt/public_key.pem")
+    @Value("classpath:jwt/public.key.pem")
     private Resource publicKeyResource;
 
+
     @Override
-    public String generateJWT(Long usuarioId) throws IOException, NoSuchAlgorithmException, InvalidKeySpecException, JOSEException {
+    public String generateJWT(Long usuarioId, String tipoEmpleado) throws IOException, NoSuchAlgorithmException, InvalidKeySpecException, JOSEException {
         PrivateKey privateKey = loadPrivateKey(privateKeyResource);
 
         JWSSigner signer = new RSASSASigner(privateKey);
@@ -43,6 +44,7 @@ public class JWTUtilityServiceImpl implements JWTUtilityService {
         Date now = new Date();
         JWTClaimsSet claimsSet = new JWTClaimsSet.Builder()
                 .subject(usuarioId.toString())
+                .claim("tipoEmpleado", tipoEmpleado)
                 .issueTime(now)
                 .expirationTime(new Date(now.getTime() + 14400000))
                 .build();

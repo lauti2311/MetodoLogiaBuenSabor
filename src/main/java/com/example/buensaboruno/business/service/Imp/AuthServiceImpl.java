@@ -47,7 +47,7 @@ public class AuthServiceImpl implements IAuthService {
             if (optionalEmpleado.isPresent()) {
                 Empleado empleado = optionalEmpleado.get();
                 if (verifyPassword(login.getClave(), empleado.getClave())) {
-                    jwt.put("jwt", jwtUtilityService.generateJWT(empleado.getId()));
+                    jwt.put("jwt", jwtUtilityService.generateJWT(empleado.getId(), empleado.getTipoEmpleado().name()));
                 } else {
                     jwt.put("error", "Credenciales incorrectas");
                 }
@@ -110,7 +110,7 @@ public class AuthServiceImpl implements IAuthService {
             if (optionalCliente.isPresent()) {
                 Cliente cliente = optionalCliente.get();
                 if (verifyPassword(login.getClave(), cliente.getClave())) {
-                    jwt.put("jwt", jwtUtilityService.generateJWT(cliente.getId()));
+                    jwt.put("jwt", jwtUtilityService.generateJWT(cliente.getId(), "CLIENTE"));
                 } else {
                     jwt.put("error", "Credenciales incorrectas");
                 }
