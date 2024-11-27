@@ -195,7 +195,6 @@ public class PedidoController extends BaseControllerImpl<Pedido, PedidoFullDto, 
     }
 
     @PutMapping("/{pedidoId}/estado")
-//    @PreAuthorize("hasAnyAuthority('CAJERO', 'SUPERADMIN', 'ADMIN', 'COCINERO')")
     public ResponseEntity<Pedido> cambiarEstadoPedido(
             @PathVariable Long pedidoId,
             @RequestParam Estado nuevoEstado
