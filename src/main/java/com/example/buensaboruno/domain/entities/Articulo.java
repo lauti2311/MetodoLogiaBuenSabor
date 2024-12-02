@@ -1,5 +1,6 @@
 package com.example.buensaboruno.domain.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
@@ -39,6 +40,7 @@ public class Articulo  extends Base {
     protected Categoria categoria;
 
     @ManyToOne
+    @JsonIgnore
     protected Sucursal sucursal;
 
 
