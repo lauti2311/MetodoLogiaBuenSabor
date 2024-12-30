@@ -47,6 +47,7 @@ public class Pedido extends Base{
 
     @ManyToOne
     @JoinColumn(name = "cliente_id")
+    @JsonIgnore
     private Cliente cliente;
 
     @OneToMany(cascade = CascadeType.ALL)

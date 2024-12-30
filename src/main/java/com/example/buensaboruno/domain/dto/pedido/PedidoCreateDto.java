@@ -2,6 +2,7 @@ package com.example.buensaboruno.domain.dto.pedido;
 
 
 import com.example.buensaboruno.domain.dto.BaseDto;
+import com.example.buensaboruno.domain.dto.cliente.ClienteFullDto;
 import com.example.buensaboruno.domain.enums.Estado;
 import com.example.buensaboruno.domain.enums.FormaPago;
 import com.example.buensaboruno.domain.enums.TipoEnvio;
@@ -25,4 +26,5 @@ public class PedidoCreateDto extends BaseDto {
     private TipoEnvio tipoEnvio;
     private FormaPago formaPago;
     private LocalDate fechaPedido;
+    private ClienteFullDto cliente;
 }

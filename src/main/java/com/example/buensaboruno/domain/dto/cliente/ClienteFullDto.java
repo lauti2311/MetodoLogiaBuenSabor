@@ -1,6 +1,7 @@
 package com.example.buensaboruno.domain.dto.cliente;
 
 import com.example.buensaboruno.domain.dto.BaseDto;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,6 +16,8 @@ public class ClienteFullDto extends BaseDto {
     private String apellido;
     private String telefono;
     private String email;
+
+    @JsonIgnore
     private String clave;
 
 }

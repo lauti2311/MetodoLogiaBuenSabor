@@ -2,14 +2,18 @@ package com.example.buensaboruno.business.service.Imp;
 
 import com.example.buensaboruno.business.mapper.PedidoMapper;
 import com.example.buensaboruno.business.service.Base.BaseServiceImpl;
+import com.example.buensaboruno.business.service.JWTUtilityService;
 import com.example.buensaboruno.business.service.PedidoService;
 import com.example.buensaboruno.domain.dto.pedido.PedidoFullDto;
 import com.example.buensaboruno.domain.entities.*;
 import com.example.buensaboruno.domain.enums.Estado;
 import com.example.buensaboruno.repositories.*;
+import com.nimbusds.jwt.JWTClaimsSet;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import java.time.Instant;
 import java.time.LocalDate;
@@ -38,6 +42,12 @@ public class PedidoServiceImpl extends BaseServiceImpl<Pedido, Long> implements 
     DomicilioRepository domicilioRepository;
 
     @Autowired
+    ClienteRepository clienteRepository;
+
+    @Autowired
+    private JWTUtilityService jwtUtilityService;
+
+    @Autowired
     private PedidoMapper pedidoMapper;
 
     public List<PedidoFullDto> findByClienteId(Long clienteId) {
@@ -50,47 +60,83 @@ public class PedidoServiceImpl extends BaseServiceImpl<Pedido, Long> implements 
     }
     @Override
     public Pedido create(Pedido request) {
-        if (request.getSucursal() == null) {
-            throw new RuntimeException("No se ha asignado una sucursal al pedido");
-        }
-        Sucursal sucursal = sucursalRepository.findById(request.getSucursal().getId())
-                .orElseThrow(() -> new RuntimeException("La sucursal con id " + request.getSucursal().getId() + " no se ha encontrado"));
+        try {
+            // Obtener el token JWT desde el contexto de seguridad
+            String authHeader = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes())
+                    .getRequest().getHeader("Authorization");
 
-        var domicilio = request.getDomicilio();
-        if(domicilio != null){
-            domicilio = domicilioRepository.save(domicilio);
-        }
-
-        Set<DetallePedido> detalles = request.getDetallePedidos();
-        Set<DetallePedido> detallesPersistidos = new HashSet<>();
-
-        if (detalles != null && !detalles.isEmpty()) {
-            double costoTotal = 0;
-            for (DetallePedido detalle : detalles) {
-                Articulo articulo = detalle.getArticulo();
-                if (articulo == null || articulo.getId() == null) {
-                    throw new RuntimeException("El artículo del detalle no puede ser nulo.");
-                }
-                articulo = articuloRepository.findById(detalle.getArticulo().getId())
-                        .orElseThrow(() -> new RuntimeException("Artículo con id " + detalle.getArticulo().getId() + " inexistente"));
-                detalle.setArticulo(articulo);
-                DetallePedido savedDetalle = detallePedidoRepository.save(detalle);
-                costoTotal += calcularTotalCosto(articulo, detalle.getCantidad());
-                descontarStock(articulo, detalle.getCantidad());
-                detallesPersistidos.add(savedDetalle);
+            if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+                throw new RuntimeException("Token JWT no presente o inválido.");
             }
-            request.setTotalCosto(costoTotal);
-            request.setDetallePedidos(detallesPersistidos);
-        } else {
-            throw new IllegalArgumentException("El pedido debe contener un detalle o más.");
+
+            String token = authHeader.substring(7); // Eliminar "Bearer "
+
+            // Obtener el sub (ID del cliente) desde el token
+            JWTClaimsSet claims = jwtUtilityService.parseJWT(token);
+            String clienteId = claims.getSubject(); // El 'sub' contiene el ID del cliente
+
+            if (clienteId == null || clienteId.isEmpty()) {
+                throw new RuntimeException("No se pudo obtener el cliente desde el token JWT.");
+            }
+
+            // Buscar el cliente en el repositorio
+            Cliente cliente = clienteRepository.findById(Long.parseLong(clienteId))
+                    .orElseThrow(() -> new RuntimeException("Cliente no encontrado"));
+
+            request.setCliente(cliente);
+
+            // Validar la sucursal
+            if (request.getSucursal() == null) {
+                throw new RuntimeException("No se ha asignado una sucursal al pedido");
+            }
+
+            Sucursal sucursal = sucursalRepository.findById(request.getSucursal().getId())
+                    .orElseThrow(() -> new RuntimeException("La sucursal con id " + request.getSucursal().getId() + " no se ha encontrado"));
+
+            // Guardar el domicilio si existe
+            var domicilio = request.getDomicilio();
+            if (domicilio != null) {
+                domicilio = domicilioRepository.save(domicilio);
+            }
+
+            // Procesar detalles del pedido
+            Set<DetallePedido> detalles = request.getDetallePedidos();
+            Set<DetallePedido> detallesPersistidos = new HashSet<>();
+
+            if (detalles != null && !detalles.isEmpty()) {
+                double costoTotal = 0;
+                for (DetallePedido detalle : detalles) {
+                    Articulo articulo = detalle.getArticulo();
+                    if (articulo == null || articulo.getId() == null) {
+                        throw new RuntimeException("El artículo del detalle no puede ser nulo.");
+                    }
+                    articulo = articuloRepository.findById(detalle.getArticulo().getId())
+                            .orElseThrow(() -> new RuntimeException("Artículo con id " + detalle.getArticulo().getId() + " inexistente"));
+                    detalle.setArticulo(articulo);
+                    DetallePedido savedDetalle = detallePedidoRepository.save(detalle);
+                    costoTotal += calcularTotalCosto(articulo, detalle.getCantidad());
+                    descontarStock(articulo, detalle.getCantidad());
+                    detallesPersistidos.add(savedDetalle);
+                }
+                request.setTotalCosto(costoTotal);
+                request.setDetallePedidos(detallesPersistidos);
+            } else {
+                throw new IllegalArgumentException("El pedido debe contener un detalle o más.");
+            }
+
+            // Asignar domicilio, sucursal y fecha
+            request.setDomicilio(domicilio);
+            request.setSucursal(sucursal);
+            request.setFechaPedido(LocalDate.now());
+
+            // Guardar el pedido
+            return pedidoRepository.save(request);
+
+        } catch (Exception e) {
+            throw new RuntimeException("Error al crear el pedido: " + e.getMessage(), e);
         }
-
-        request.setDomicilio(domicilio);
-        request.setSucursal(sucursal);
-        request.setFechaPedido(LocalDate.now());
-
-        return pedidoRepository.save(request);
     }
+
 
     @Transactional
     public Articulo descontarStock(Articulo articulo, int cantidad) {

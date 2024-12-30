@@ -37,6 +37,5 @@ public class PedidoFullDto extends BaseDto {
     private Factura factura;
     private SucursalShortDto sucursal;
     private ClienteFullDto cliente;
-    private UsuarioDto usuario;
     private DomicilioFullDto domicilio;
 }
