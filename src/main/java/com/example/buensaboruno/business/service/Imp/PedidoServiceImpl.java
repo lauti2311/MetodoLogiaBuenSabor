@@ -165,20 +165,17 @@ public class PedidoServiceImpl extends BaseServiceImpl<Pedido, Long> implements 
             if (detalles != null && !detalles.isEmpty()) {
                 for (ArticuloManufacturadoDetalle detalle : detalles) {
                     ArticuloInsumo insumo = detalle.getArticuloInsumo();
-                    // Cantidad necesaria de insumo por la cantidad de manufacturados del pedido
                     int cantidadInsumo = detalle.getCantidad() * cantidad;
-                    // Descontar el stock actual
                     int stockDescontado = insumo.getStockActual() - cantidadInsumo;
                     if (stockDescontado <= insumo.getStockMinimo()) {
                         throw new RuntimeException("El insumo con id " + insumo.getId() + " (" + insumo.getDenominacion() + ") presente en el artículo "
                                 + manufacturado.getDenominacion() + " (id " + manufacturado.getId() + ") alcanzó el stock mínimo: " + stockDescontado);
                     }
-                    insumo.setStockActual(stockDescontado); // Asignarle al insumo, el stock descontado
+                    insumo.setStockActual(stockDescontado);
                 }
             }
-            return manufacturado; // Return the updated manufacturado
+            return manufacturado;
         } else {
-            // Por si no encuentra el artículo o es de un tipo desconocido
             throw new RuntimeException("Artículo de tipo desconocido con id " + articulo.getId());
         }
     }

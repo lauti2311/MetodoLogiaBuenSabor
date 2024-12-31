@@ -29,7 +29,7 @@ public class ArticuloInsumoServiceImpl extends BaseServiceImpl<ArticuloInsumo, L
     ImagenArticuloRepository imagenArticuloRepository;
 
     @Autowired
-    private CloudinaryService cloudinaryService; // Servicio para interactuar con Cloudinary
+    private CloudinaryService cloudinaryService;
     @Autowired
     private ArticuloInsumoRepository articuloInsumoRepository;
     @Autowired
@@ -70,13 +70,10 @@ public class ArticuloInsumoServiceImpl extends BaseServiceImpl<ArticuloInsumo, L
             // Obtener el insumo del artículo
             ArticuloInsumo insumo = articuloInsumo;
 
-            // Descontar la cantidad del stock actual
             int stockDescontado = insumo.getStockActual() - cantidad;
 
-            // Asignar el nuevo stock al insumo
             insumo.setStockActual(stockDescontado);
 
-            // Retornar el stock actualizado
             return ResponseEntity.ok(stockDescontado);
         } catch (Exception e) {
             // En caso de error, imprimir la excepción y retornar un mensaje de error

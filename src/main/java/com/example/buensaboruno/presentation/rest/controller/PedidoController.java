@@ -130,7 +130,6 @@ public class PedidoController extends BaseControllerImpl<Pedido, PedidoFullDto, 
     }
 
     @GetMapping("ranking/pedidos/cliente/data/{sucursalId}")
-//    @PreAuthorize("hasAnyAuthority('ADMIN', 'SUPERADMIN')")
     @CrossOrigin("*")
     public ResponseEntity<List<Object[]>> downloadCantidadPedidosPorClienteData(@PathVariable Long sucursalId) throws SQLException {
         return ResponseEntity.ok(this.facade.getCantidadDePedidosPorData(sucursalId));
