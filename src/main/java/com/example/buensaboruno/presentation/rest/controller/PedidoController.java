@@ -15,6 +15,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 //import org.springframework.security.access.prepost.PreAuthorize;
 //import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.ByteArrayOutputStream;
@@ -25,6 +26,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/pedido")
+@PreAuthorize("isAuthenticated()")
 @CrossOrigin("*")
 public class PedidoController extends BaseControllerImpl<Pedido, PedidoFullDto, Long, PedidoFacadeImp> {
 
@@ -130,7 +132,6 @@ public class PedidoController extends BaseControllerImpl<Pedido, PedidoFullDto, 
     }
 
     @GetMapping("ranking/pedidos/cliente/data/{sucursalId}")
-//    @PreAuthorize("hasAnyAuthority('ADMIN', 'SUPERADMIN')")
     @CrossOrigin("*")
     public ResponseEntity<List<Object[]>> downloadCantidadPedidosPorClienteData(@PathVariable Long sucursalId) throws SQLException {
         return ResponseEntity.ok(this.facade.getCantidadDePedidosPorData(sucursalId));
@@ -195,7 +196,6 @@ public class PedidoController extends BaseControllerImpl<Pedido, PedidoFullDto, 
     }
 
     @PutMapping("/{pedidoId}/estado")
-//    @PreAuthorize("hasAnyAuthority('CAJERO', 'SUPERADMIN', 'ADMIN', 'COCINERO')")
     public ResponseEntity<Pedido> cambiarEstadoPedido(
             @PathVariable Long pedidoId,
             @RequestParam Estado nuevoEstado

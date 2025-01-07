@@ -20,10 +20,10 @@ public class ClienteController extends BaseControllerImpl<Cliente, ClienteFullDt
 
     public ClienteController(ClienteFacadeImp facade) {super (facade); }
 
-    @GetMapping("email/{email}")
-    public Cliente getClientByEmail(@PathVariable String email) {
-        return this.facade.findByEmail(email);
-    }
+//    @GetMapping("email/{email}")
+//    public Cliente getClientByEmail(@PathVariable String email) {
+//        return this.facade.findByEmail(email);
+//    }
 
     @GetMapping("/{id}")
     public ResponseEntity<ClienteFullDto> getById(@PathVariable Long id){
@@ -36,13 +36,13 @@ public class ClienteController extends BaseControllerImpl<Cliente, ClienteFullDt
     }
 
     @PostMapping()
-   //@PreAuthorize("hasAnyAuthority('ADMIN', 'SUPERADMIN')")
+    //@PreAuthorize("hasAnyAuthority('ADMIN', 'SUPERADMIN')")
     public ResponseEntity<ClienteFullDto> create(@RequestBody ClienteFullDto entity){
         return super.create(entity);
     }
 
     @PutMapping("/{id}")
-   //@PreAuthorize("hasAnyAuthority('ADMIN', 'SUPERADMIN')")
+    //@PreAuthorize("hasAnyAuthority('ADMIN', 'SUPERADMIN')")
     public ResponseEntity<ClienteFullDto> edit(@RequestBody ClienteFullDto entity, @PathVariable Long id){
         return super.edit(entity, id);
     }

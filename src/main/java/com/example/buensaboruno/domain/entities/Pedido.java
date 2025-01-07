@@ -4,6 +4,8 @@ import com.example.buensaboruno.domain.enums.Estado;
 import com.example.buensaboruno.domain.enums.FormaPago;
 import com.example.buensaboruno.domain.enums.TipoEnvio;
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
@@ -36,6 +38,7 @@ public class Pedido extends Base{
     private Domicilio domicilio;
 
     @ManyToOne
+    @JsonIgnore
     private Sucursal sucursal;
 
     @OneToOne
@@ -44,6 +47,7 @@ public class Pedido extends Base{
 
     @ManyToOne
     @JoinColumn(name = "cliente_id")
+    @JsonIgnore
     private Cliente cliente;
 
     @OneToMany(cascade = CascadeType.ALL)
@@ -52,6 +56,7 @@ public class Pedido extends Base{
     @JoinColumn(name = "pedido_id")
     //SE AGREGA EL BUILDER.DEFAULT PARA QUE BUILDER NO SOBREESCRIBA LA INICIALIZACION DE LA LISTA
     @Builder.Default
+    @JsonManagedReference
     private Set<DetallePedido> detallePedidos = new HashSet<>();
 
     @ManyToOne

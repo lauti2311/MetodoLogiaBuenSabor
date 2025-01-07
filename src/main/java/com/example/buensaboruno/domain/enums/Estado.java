@@ -5,7 +5,6 @@ public enum Estado {
     PENDIENTE,
     TERMINADO,
     EN_DELIVERY,
-    ENTREGADO,
     FACTURADO,
     RECHAZADO
 }

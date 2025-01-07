@@ -53,10 +53,9 @@ public class Sucursal extends  Base{
     private Set<Categoria> categorias = new HashSet<>();
 
 
-
-
     @OneToMany(mappedBy = "sucursal",cascade = CascadeType.REFRESH,fetch = FetchType.LAZY)
     @Builder.Default
+    @JsonIgnore
     private Set<Empleado> empleados = new HashSet<>();
 
     @ManyToOne
@@ -72,4 +71,6 @@ public class Sucursal extends  Base{
     @Builder.Default
     @JsonIgnore
     private Set<Articulo> articulos = new HashSet<>();
+
+
 }
