@@ -18,6 +18,7 @@ import java.util.Set;
 @Setter
 public class ArticuloInsumoFullDto extends BaseDto {
     //de articulo
+    private Long articuloId;
     private String denominacion;
     private String precioVenta;
     //propios de la clase
