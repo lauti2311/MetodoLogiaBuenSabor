@@ -7,6 +7,8 @@ import com.example.buensaboruno.domain.dto.pedido.PedidoFullDto;
 import com.example.buensaboruno.domain.entities.Pedido;
 import com.example.buensaboruno.domain.enums.Estado;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.io.ByteArrayOutputStream;
 import java.time.Instant;
@@ -26,9 +28,12 @@ public interface PedidoFacade extends BaseFacade<PedidoFullDto, Long> {
     SXSSFWorkbook getCantidadDePedidosPorCliente(Long sucursalId, Instant desde, Instant hasta);
 
     Pedido cambiarEstado(Long pedidoId, Estado nuevoEstado);
+
     List<Pedido> getPedidosFiltrados(String rol);
 
-    List<PedidoFullDto> findByClienteId(Long clienteId);
+    @Query(value = "SELECT p.* FROM pedido u " +
+            "WHERE p.cliente_id = :clienteId ", nativeQuery = true)
+    List<PedidoFullDto> findByClienteId(@Param("cliente_id") Long clienteId);
     List<PedidoFullDto> pedidosSucursal(Long idSucursal);
 
     ByteArrayOutputStream generatePedidoPDF(Long pedidoId);
