@@ -6,4 +6,6 @@ import com.example.buensaboruno.domain.entities.Domicilio;
 import org.springframework.web.multipart.MultipartFile;
 
 public interface DomicilioService extends BaseService<Domicilio, Long> {
+
+
 }
