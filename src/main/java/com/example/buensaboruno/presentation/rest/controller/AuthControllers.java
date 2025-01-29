@@ -4,16 +4,20 @@ import com.example.buensaboruno.business.service.IAuthService;
 import com.example.buensaboruno.business.service.JWTUtilityService;
 import com.example.buensaboruno.config.security.LoginDTO;
 import com.example.buensaboruno.config.security.ResponseDTO;
+import com.example.buensaboruno.domain.dto.domicilio.DomicilioFullDto;
 import com.example.buensaboruno.domain.entities.Cliente;
+import com.example.buensaboruno.domain.entities.Domicilio;
 import com.example.buensaboruno.domain.entities.Empleado;
 
 import com.nimbusds.jwt.JWTClaimsSet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/auth")
@@ -119,6 +123,19 @@ public class AuthControllers {
 
         } catch (Exception e) {
             return ResponseEntity.status(500).body("Error al obtener el cliente: " + e.getMessage());
+        }
+    }
+
+    @PutMapping("/{clienteId}/domicilios")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<ResponseDTO> agregarDomiciliosACliente(@PathVariable Long clienteId, @RequestBody Set<DomicilioFullDto> nuevosDomicilios) {
+        try {
+            ResponseDTO response = authService.agregarDomiciliosACliente(clienteId, nuevosDomicilios);
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (Exception e) {
+            ResponseDTO errorResponse = new ResponseDTO();
+            errorResponse.setMessage("Error durante la actualización: " + e.getMessage());
+            return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }

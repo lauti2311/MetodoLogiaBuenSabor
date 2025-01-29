@@ -1,3 +1,4 @@
+
 package com.example.buensaboruno.business.service.Imp;
 
 import com.example.buensaboruno.business.service.IAuthService;
@@ -5,6 +6,7 @@ import com.example.buensaboruno.business.service.JWTUtilityService;
 import com.example.buensaboruno.config.security.LoginDTO;
 import com.example.buensaboruno.config.security.ResponseDTO;
 import com.example.buensaboruno.config.security.UserValidation;
+import com.example.buensaboruno.domain.dto.domicilio.DomicilioFullDto;
 import com.example.buensaboruno.domain.entities.Cliente;
 import com.example.buensaboruno.domain.entities.Domicilio;
 import com.example.buensaboruno.domain.entities.Empleado;
@@ -18,7 +20,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class AuthServiceImpl implements IAuthService {
@@ -163,6 +167,47 @@ public class AuthServiceImpl implements IAuthService {
             throw new Exception(e.toString());
         }
     }
+
+    @Transactional
+    public ResponseDTO agregarDomiciliosACliente(Long clienteId, Set<DomicilioFullDto> nuevosDomicilios) {
+        try {
+            ResponseDTO response = new ResponseDTO();
+
+            Optional<Cliente> optionalCliente = clienteRepository.findById(clienteId);
+
+            if (!optionalCliente.isPresent()) {
+                response.setNumOfErrors(1);
+                response.setMessage("Cliente no encontrado");
+                return response;
+            }
+
+            Cliente cliente = optionalCliente.get();
+
+            for (DomicilioFullDto domicilioDto : nuevosDomicilios) {
+                Domicilio domicilio = new Domicilio();
+                domicilio.setCalle(domicilioDto.getCalle());
+                domicilio.setNumero(domicilioDto.getNumero());
+                domicilio.setCp(domicilioDto.getCp());
+                domicilio.setPiso(domicilioDto.getPiso());
+                domicilio.setNroDpto(domicilioDto.getNroDpto());
+                domicilio.setLocalidad(domicilioDto.getLocalidad().toEntity()); // Asumiendo que tienes un método para convertir LocalidadFullDto a Localidad
+
+                domicilio.getClientes().add(cliente); // Asociar el domicilio al cliente
+                domicilioRepository.save(domicilio);
+                cliente.getDomicilios().add(domicilio); // Asociar el cliente al domicilio
+            }
+
+            // Guardar el cliente actualizado
+            clienteRepository.save(cliente);
+            response.setMessage("Domicilios agregados exitosamente");
+
+            return response;
+
+        } catch (Exception e) {
+            throw new RuntimeException("Error al agregar domicilios: " + e.getMessage());
+        }
+    }
+
 
     public Cliente getClienteById(Long id) {
         return clienteRepository.findById(id).orElse(null);
