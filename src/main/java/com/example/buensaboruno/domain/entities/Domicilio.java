@@ -33,7 +33,7 @@ public class Domicilio extends Base{
 
     @ManyToMany (mappedBy = "domicilios")
     @Builder.Default
-    @JsonIgnore
+   // @JsonIgnore
     private Set<Cliente> clientes = new HashSet<>();
 
 }
