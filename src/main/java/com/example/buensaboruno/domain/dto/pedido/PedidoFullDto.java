@@ -10,6 +10,7 @@ import com.example.buensaboruno.domain.entities.Factura;
 import com.example.buensaboruno.domain.enums.Estado;
 import com.example.buensaboruno.domain.enums.FormaPago;
 import com.example.buensaboruno.domain.enums.TipoEnvio;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -37,5 +38,7 @@ public class PedidoFullDto extends BaseDto {
     private Factura factura;
     private SucursalShortDto sucursal;
     private ClienteFullDto cliente;
+
+    @JsonIgnore
     private DomicilioFullDto domicilio;
 }
