@@ -93,11 +93,23 @@ public class PedidoServiceImpl extends BaseServiceImpl<Pedido, Long> implements 
             Sucursal sucursal = sucursalRepository.findById(request.getSucursal().getId())
                     .orElseThrow(() -> new RuntimeException("La sucursal con id " + request.getSucursal().getId() + " no se ha encontrado"));
 
-            // Guardar el domicilio si existe
-            var domicilio = request.getDomicilio();
-            if (domicilio != null) {
-                domicilio = domicilioRepository.save(domicilio);
+            // Verificar y asignar el domicilio
+            // Verificar y asignar el domicilio
+            Domicilio domicilioRequest = request.getDomicilio();
+            if (domicilioRequest != null && domicilioRequest.getId() != null) {
+                final Long domicilioId = domicilioRequest.getId();  // Guardar el id en una variable final
+                Domicilio domicilio = domicilioRepository.findById(domicilioId)
+                        .orElseThrow(() -> new RuntimeException("Domicilio con id " + domicilioId + " no encontrado"));
+                request.setDomicilio(domicilio);
+            } else if (domicilioRequest != null) {
+                Domicilio domicilio = domicilioRepository.save(domicilioRequest);
+                request.setDomicilio(domicilio);
+            } else if (cliente.getDomicilios() != null && !cliente.getDomicilios().isEmpty()) {
+                request.setDomicilio(cliente.getDomicilios().iterator().next());
+            } else {
+                throw new RuntimeException("El cliente no tiene un domicilio válido.");
             }
+
 
             // Procesar detalles del pedido
             Set<DetallePedido> detalles = request.getDetallePedidos();
@@ -125,7 +137,7 @@ public class PedidoServiceImpl extends BaseServiceImpl<Pedido, Long> implements 
             }
 
             // Asignar domicilio, sucursal y fecha
-            request.setDomicilio(domicilio);
+            //request.setDomicilio(domicilio);
             request.setSucursal(sucursal);
             request.setFechaPedido(LocalDate.now());
 

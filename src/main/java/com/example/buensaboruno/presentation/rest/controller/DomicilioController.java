@@ -9,6 +9,7 @@ import com.example.buensaboruno.business.service.Imp.DomicilioServiceImpl;
 import com.example.buensaboruno.presentation.rest.base.BaseControllerImpl;
 import org.springframework.http.ResponseEntity;
 //import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -46,6 +47,13 @@ public class DomicilioController extends BaseControllerImpl<Domicilio, Domicilio
 //    @PreAuthorize("hasAnyAuthority('ADMIN', 'SUPERADMIN')")
     public ResponseEntity<?> deleteById(@PathVariable Long id){
         return super.deleteById(id);
+    }
+
+    @GetMapping("/bycliente/{clienteId}")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<List<DomicilioFullDto>> getDomiciliosByCliente(@PathVariable Long clienteId){
+        List<DomicilioFullDto> domicilios = facade.getDomiciliosByCliente(clienteId);
+        return ResponseEntity.ok(domicilios);
     }
 }
 
