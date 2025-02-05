@@ -18,7 +18,7 @@ public class DomicilioFullDto extends BaseDto {
     private Integer numero;
     private Integer cp;
     private Integer piso;
-    private Integer nroDpto;
+    private String nroDpto;
     private LocalidadFullDto localidad;
 
 }
