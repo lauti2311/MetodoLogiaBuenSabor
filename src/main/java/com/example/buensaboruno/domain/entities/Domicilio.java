@@ -24,7 +24,7 @@ public class Domicilio extends Base{
     private Integer numero;
     private Integer cp;
     private Integer piso;
-    private Integer nroDpto;
+    private String nroDpto;
 
     @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "localidad_id")

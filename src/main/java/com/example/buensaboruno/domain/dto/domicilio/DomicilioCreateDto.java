@@ -16,6 +16,6 @@ public class DomicilioCreateDto extends BaseDto {
     private Integer numero;
     private Integer cp;
     private Integer piso;
-    private Integer nroDpto;
+    private String nroDpto;
     private Long idLocalidad;
 }
