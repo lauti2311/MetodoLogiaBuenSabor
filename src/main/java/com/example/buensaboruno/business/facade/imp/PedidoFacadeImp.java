@@ -304,45 +304,61 @@ public class PedidoFacadeImp extends BaseFacadeImp<Pedido, PedidoFullDto, Long> 
             PdfWriter.getInstance(document, baos);
             document.open();
 
-            // Encabezado
-            PdfPTable tableCabecera = new PdfPTable(1);
+            // --- ENCABEZADO: LOGO IZQUIERDA + TÍTULO Y LOGO UTN DERECHA ---
+            PdfPTable tableCabecera = new PdfPTable(2);
             tableCabecera.setWidthPercentage(100f);
+            tableCabecera.setWidths(new float[]{1f, 2f}); // Proporción de columnas
+
+            // Logo a la izquierda
+            Image imgLogo = Image.getInstance("https://res.cloudinary.com/dd3aby89j/image/upload/v1739218568/tmr8vybsvaosheg7yxyj.jpg");
+            imgLogo.scaleAbsolute(100, 100); // Tamaño del logo
+            PdfPCell celdaLogo = new PdfPCell(imgLogo);
+            celdaLogo.setBorder(Rectangle.NO_BORDER);
+            celdaLogo.setHorizontalAlignment(Element.ALIGN_LEFT);
+            celdaLogo.setVerticalAlignment(Element.ALIGN_MIDDLE);
+
+            // Título y logo UTN a la derecha
+            PdfPTable tituloTable = new PdfPTable(1);
+            tituloTable.setWidthPercentage(100f);
 
             Paragraph header = new Paragraph("FACTURA DEL PEDIDO", titulo);
-            header.setAlignment(Paragraph.ALIGN_RIGHT);
-            PdfPCell celda = new PdfPCell(header);
-            celda.setBorder(Rectangle.NO_BORDER);
-            celda.setHorizontalAlignment(PdfPCell.ALIGN_RIGHT);
-            tableCabecera.addCell(celda);
+            header.setAlignment(Element.ALIGN_RIGHT);
+            PdfPCell celdaTitulo = new PdfPCell(header);
+            celdaTitulo.setBorder(Rectangle.NO_BORDER);
+            celdaTitulo.setHorizontalAlignment(Element.ALIGN_RIGHT);
 
             Image imgCabeceraRight = Image.getInstance("https://upload.wikimedia.org/wikipedia/commons/6/67/UTN_logo.jpg");
             imgCabeceraRight.scalePercent(10f);
-            imgCabeceraRight.setBorder(Rectangle.NO_BORDER);
             PdfPCell logoUTN = new PdfPCell(imgCabeceraRight);
             logoUTN.setBorder(Rectangle.NO_BORDER);
-            logoUTN.setHorizontalAlignment(PdfPCell.ALIGN_RIGHT);
-            tableCabecera.addCell(logoUTN);
+            logoUTN.setHorizontalAlignment(Element.ALIGN_RIGHT);
+
+            tituloTable.addCell(celdaTitulo);
+            tituloTable.addCell(logoUTN);
+
+            PdfPCell celdaTituloLogo = new PdfPCell(tituloTable);
+            celdaTituloLogo.setBorder(Rectangle.NO_BORDER);
+
+            tableCabecera.addCell(celdaLogo);
+            tableCabecera.addCell(celdaTituloLogo);
 
             document.add(tableCabecera);
             addEmptyLine(document, 1);
 
-            // Crear tabla principal con 2 columnas
+            // --- SIGUE TU LÓGICA ORIGINAL ---
             PdfPTable mainTable = new PdfPTable(2);
             mainTable.setWidthPercentage(100);
             mainTable.setWidths(new float[]{3f, 2f});
 
-            // Columna izquierda: detalles del pedido
             PdfPTable leftColumn = new PdfPTable(1);
             leftColumn.setWidthPercentage(100);
 
-            // Información del pedido
             addCellToTable(leftColumn, "Pedido N°: ", String.valueOf(pedido.getId()));
             addCellToTable(leftColumn, "Fecha del Pedido: ", pedido.getFechaPedido().format(DateTimeFormatter.ISO_LOCAL_DATE));
             addCellToTable(leftColumn, "Total: ", "$" + pedido.getTotal());
             addCellToTable(leftColumn, "Tipo de Envío: ", pedido.getTipoEnvio().name());
             addCellToTable(leftColumn, "Forma de Pago: ", pedido.getFormaPago().name());
 
-            // Información de la factura
             if (pedido.getFactura() != null) {
                 addCellToTable(leftColumn, "Total Venta: ", "$" + pedido.getFactura().getTotalVenta());
             }
@@ -351,11 +367,9 @@ public class PedidoFacadeImp extends BaseFacadeImp<Pedido, PedidoFullDto, Long> 
             leftColumnCell.setBorder(Rectangle.NO_BORDER);
             mainTable.addCell(leftColumnCell);
 
-            // Columna derecha: información del cliente
             PdfPTable rightColumn = new PdfPTable(1);
             rightColumn.setWidthPercentage(100);
 
-            // Información del cliente
             addCellToTable(rightColumn, "Cliente: ", pedido.getCliente().getNombre() + " " + pedido.getCliente().getApellido());
             addCellToTable(rightColumn, "Teléfono: ", pedido.getCliente().getTelefono());
             addCellToTable(rightColumn, "Email: ", pedido.getCliente().getEmail());
@@ -366,7 +380,7 @@ public class PedidoFacadeImp extends BaseFacadeImp<Pedido, PedidoFullDto, Long> 
 
             document.add(mainTable);
 
-            // Detalle del pedido
+            // --- DETALLE DEL PEDIDO ---
             PdfPTable detalleTable = new PdfPTable(3);
             detalleTable.setWidthPercentage(100);
             detalleTable.addCell(new PdfPCell(new Phrase("Artículo", textoBold)));
